@@ -1,0 +1,45 @@
+body {
+    background-color: #e8faff;
+}
+
+/**
+    Table styles
+ */
+
+.table, .row, .data {
+    border: 1px solid #cac9ca;
+    border-collapse: collapse;
+}
+
+.table {
+    width: 100%;
+}
+
+.row {
+    display: table-row;
+}
+
+.data {
+    width: 25px;
+    height: 25px;
+    padding: 0;
+}
+
+/*.data:hover {*/
+/*    background-color: #c8c7c8;*/
+/*}*/
+
+.data-selected {
+    background-color: #696869;
+    color: white;
+}
+
+.data-start {
+    background-color: #6bd35f;
+    color: white;
+}
+
+.data-end {
+    background-color: #318be0;
+    color: white;
+}

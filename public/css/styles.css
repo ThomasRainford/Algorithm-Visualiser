@@ -43,3 +43,11 @@ body {
     background-color: #318be0;
     color: white;
 }
+
+/**
+    Navbar styles
+ */
+
+.nav-item {
+    margin: 5px;
+}

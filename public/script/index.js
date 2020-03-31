@@ -184,9 +184,10 @@ $(document).ready(function () {
         grid.logGrid();
     });
 
-    // Change the text of a drop down menu to the selected item text
+    // Change the text of the alg-activate button to the selected dropdown menu item
     $(".dropdown-menu button").click(function () {
-        $(".algorithm:first-child").html($(this).text() + ' <span class="caret"></span>');
+        let text = $(this).text();
+        $(".alg-activate").text("Run " + text);
     });
 
 

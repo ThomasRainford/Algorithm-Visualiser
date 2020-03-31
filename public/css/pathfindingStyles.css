@@ -48,6 +48,10 @@ body {
     Navbar styles
  */
 
+.navbar {
+    margin-bottom: 5px;
+}
+
 .nav-item {
     margin: 5px;
 }

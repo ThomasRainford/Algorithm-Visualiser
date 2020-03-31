@@ -149,14 +149,12 @@ class Grid {
         this.gridArray[row].push(node);
         return row + "-" + col;
     }
-
-
 }
 
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
-    grid.logGrid();
+    //grid.logGrid();
 
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.
@@ -186,25 +184,30 @@ $(document).ready(function () {
         grid.logGrid();
     });
 
-
-    /* TEST: test selecting one td */
-    // const td = "0-0";
-    // $(".table tr.row td." + td).addClass("data-selected");
-
-    /* TEST: Testing iterating over table to add/remove a td class */
-    // class: button-fill
-    $(".button-fill").on("click", function () {
-        $(".table tr.row td.data").each(function () {
-            //selectNode(this, false, grid);
-        });
+    // Change the text of a drop down menu to the selected item text
+    $(".dropdown-menu button").click(function () {
+        $(".algorithm:first-child").html($(this).text() + ' <span class="caret"></span>');
     });
 
-    // class: button-clear
-    $(".button-clear").on("click", function () {
-        $(".table tr.row td.data").each(function () {
-            //selectNode(this, true, grid);
-        });
-    });
+
+    // /* TEST: test selecting one td */
+    // // const td = "0-0";
+    // // $(".table tr.row td." + td).addClass("data-selected");
+    //
+    // /* TEST: Testing iterating over table to add/remove a td class */
+    // // class: button-fill
+    // $(".button-fill").on("click", function () {
+    //     $(".table tr.row td.data").each(function () {
+    //         //selectNode(this, false, grid);
+    //     });
+    // });
+    //
+    // // class: button-clear
+    // $(".button-clear").on("click", function () {
+    //     $(".table tr.row td.data").each(function () {
+    //         //selectNode(this, true, grid);
+    //     });
+    // });
 
 
 });
@@ -243,7 +246,7 @@ function selectNode(element, grid) {
  * @param selectedNode
  * @returns {*}
  */
-function moveStartEndNode(element, grid, selectedNode){
+function moveStartEndNode(element, grid, selectedNode) {
 
     // keep track of the node before the new node.
     let previousNode = selectedNode;
@@ -259,8 +262,8 @@ function moveStartEndNode(element, grid, selectedNode){
     let newNode = getNode(element, grid);
 
     // ensure start node cannot replace end node and vice versa.
-    if((selectedNode.state === "start" && newNode.state !== "end") ||
-        (selectedNode.state === "end" && newNode.state !== "start")){
+    if ((selectedNode.state === "start" && newNode.state !== "end") ||
+        (selectedNode.state === "end" && newNode.state !== "start")) {
 
         newNode.state = selectedNode.state;
 

@@ -2,6 +2,10 @@ body {
     background-color: #e8faff;
 }
 
+h1 {
+    margin: auto;
+}
+
 /**
     Table styles
  */

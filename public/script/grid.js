@@ -1,5 +1,5 @@
 
-import { Node } from './node';
+import { Node } from './node.js';
 
 /**
  * Create a grid of size width and height.
@@ -10,8 +10,7 @@ import { Node } from './node';
 export function Grid(width, height) {
     this.width = width;
     this.height = height;
-    this.gridArray = this.create2DArray(height);
-    this.createGrid();
+    this.gridArray = create2DArray(height);
 
     /**
      * Creates a table of size width and height.
@@ -20,7 +19,7 @@ export function Grid(width, height) {
      * to he rows. The table data does not contain anything.
      *
      */
-    Grid.prototype.createGrid = function() {
+    this.createGrid = function() {
         let tableHTML = "";
         let startPosition = "";
         let endPosition = "";
@@ -70,13 +69,13 @@ export function Grid(width, height) {
      * @param rows
      * @returns {[]}
      */
-    Grid.prototype.create2DArray = function(rows) {
+    function create2DArray(rows) {
         const array = [];
         for (let col = 0; col < rows; col++) {
             array[col] = [];
         }
         return array;
-    };
+    }
 
     /**
      * Splits a string which represents a position in the grid eg: 1-2
@@ -96,7 +95,7 @@ export function Grid(width, height) {
      * @param row
      */
     Grid.prototype.createUnvisitedNode = function(tdClass, row) {
-        let node = Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "unvisited");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "unvisited");
         this.gridArray[row].push(node);
     };
 
@@ -110,7 +109,7 @@ export function Grid(width, height) {
      * @returns {string} - the position of the node.
      */
     Grid.prototype.createStartNode = function(tdClass, row, col) {
-        let node = Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "start");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "start");
         this.gridArray[row].push(node);
         return row + "-" + col;
     };
@@ -125,7 +124,7 @@ export function Grid(width, height) {
      * @returns {string} - the position of the node.
      */
     Grid.prototype.createEndNode = function(tdClass, row, col) {
-        let node = Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "end");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "end");
         this.gridArray[row].push(node);
         return row + "-" + col;
     };

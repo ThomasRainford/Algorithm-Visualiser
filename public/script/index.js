@@ -151,10 +151,11 @@
 //     }
 // }
 
-import { Grid } from './grid';
+import { Grid } from './grid.js';
 
 $(document).ready(function () {
-    let grid = Grid($(window).width() / 30, $(window).height() / 30);
+    let grid = new Grid($(window).width() / 30, $(window).height() / 30);
+    grid.createGrid();
     //grid.logGrid();
 
     // When the mouse is dragged around the table, select the cells

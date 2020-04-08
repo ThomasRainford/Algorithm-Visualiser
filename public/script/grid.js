@@ -41,8 +41,6 @@ export function Grid(width, height) {
                 } else {
                     this.createUnvisitedNode(tdClass, row);
                 }
-
-
             }
             tableRow += "</tr>";
             tableHTML += tableRow;

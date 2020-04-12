@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
     $(document).mouseup(function () {
         isMouseDown = false;
-        grid.logGrid();
+        //grid.logGrid();
     });
 
     // Change the text of the alg-activate button to the selected dropdown menu item
@@ -39,26 +39,6 @@ $(document).ready(function () {
         let text = $(this).text();
         $(".alg-activate").text("Run " + text);
     });
-
-
-    // /* TEST: test selecting one td */
-    // // const td = "0-0";
-    // // $(".table tr.row td." + td).addClass("data-selected");
-    //
-    // /* TEST: Testing iterating over table to add/remove a td class */
-    // // class: button-fill
-    // $(".button-fill").on("click", function () {
-    //     $(".table tr.row td.data").each(function () {
-    //         //selectNode(this, false, grid);
-    //     });
-    // });
-    //
-    // // class: button-clear
-    // $(".button-clear").on("click", function () {
-    //     $(".table tr.row td.data").each(function () {
-    //         //selectNode(this, true, grid);
-    //     });
-    // });
 
 
 });

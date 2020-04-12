@@ -155,11 +155,11 @@ export function Grid(width, height) {
                 neighbours.push(gridArray[width-2][0]);
 
             } else { // in-between
-                neighbours.push(gridArray[0][currentNode.row-1]);
-                neighbours.push(gridArray[1][currentNode.row-1]);
-                neighbours.push(gridArray[1][currentNode.row]);
-                neighbours.push(gridArray[1][currentNode.row+1]);
-                neighbours.push(gridArray[0][currentNode.row+1]);
+                neighbours.push(gridArray[currentNode.col+1][0]);
+                neighbours.push(gridArray[currentNode.col+1][currentNode.row+1]);
+                neighbours.push(gridArray[currentNode.col][currentNode.row+1]);
+                neighbours.push(gridArray[currentNode.col-1][currentNode.row+1]);
+                neighbours.push(gridArray[currentNode.col-1][0]);
             }
 
         } else if (currentNode.row === height-1) { // bottom node
@@ -177,6 +177,7 @@ export function Grid(width, height) {
         } else if (currentNode.col === width - 1) { // right node
 
         }
+        return neighbours;
     }
 
 

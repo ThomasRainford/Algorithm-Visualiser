@@ -31,7 +31,7 @@ $(document).ready(function () {
     });
     $(document).mouseup(function () {
         isMouseDown = false;
-        //grid.logGrid();
+        grid.logGrid();
     });
 
     // Change the text of the alg-activate button to the selected dropdown menu item

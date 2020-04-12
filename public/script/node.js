@@ -9,7 +9,7 @@
 export function Node(row, col, weight, state) {
     this.row = row;
     this.col = col;
-
     this.weight = weight;
     this.state = state;
+    this.neighbours = [];
 }

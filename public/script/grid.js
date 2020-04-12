@@ -126,4 +126,58 @@ export function Grid(width, height) {
         this.gridArray[row].push(node);
         return row + "-" + col;
     };
+
+    Grid.prototype.createNodeNeighbours = function () {
+        for(let row = 0; row < this.height; row++) {
+
+            for(let col = 0; col < this.width; col++) {
+                let currentNode = this.gridArray[row][col];
+
+                currentNode.neighbours = addEdgeNeighbours(currentNode, this.width, this.height, this.gridArray);
+
+
+            }
+
+        }
+    }
+
+    function addEdgeNeighbours(currentNode, width, height, gridArray) {
+        let neighbours = [];
+        if (currentNode.row === 0) { // top node
+            if(currentNode.col === 0) { // top left
+                neighbours.push(gridArray[1][0]);
+                neighbours.push(gridArray[1][1]);
+                neighbours.push(gridArray[0][1]);
+
+            } else if (currentNode.col === width-1) { // top right
+                neighbours.push(gridArray[width-1][1]);
+                neighbours.push(gridArray[width-2][1]);
+                neighbours.push(gridArray[width-2][0]);
+
+            } else { // in-between
+                neighbours.push(gridArray[0][currentNode.row-1]);
+                neighbours.push(gridArray[1][currentNode.row-1]);
+                neighbours.push(gridArray[1][currentNode.row]);
+                neighbours.push(gridArray[1][currentNode.row+1]);
+                neighbours.push(gridArray[0][currentNode.row+1]);
+            }
+
+        } else if (currentNode.row === height-1) { // bottom node
+            if(currentNode.col === 0) { // bottom left
+
+            } else if (currentNode.col === width-1) { // bottom right
+
+            } else { // in-between
+
+            }
+
+        } else if (currentNode.col === 0) { // left node
+
+
+        } else if (currentNode.col === width - 1) { // right node
+
+        }
+    }
+
+
 }

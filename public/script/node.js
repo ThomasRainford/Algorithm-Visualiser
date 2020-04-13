@@ -12,4 +12,5 @@ export function Node(row, col, weight, state) {
     this.weight = parseInt(weight);
     this.state = state;
     this.neighbours = [];
+    this.distance = Number.MAX_SAFE_INTEGER;
 }

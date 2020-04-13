@@ -1,7 +1,4 @@
 
-import { Node } from './node';
-import { Grid } from './grid';
-
 export function Dijkstra(start, end, grid) {
     this.path = [start];
 
@@ -12,7 +9,7 @@ export function Dijkstra(start, end, grid) {
 
         unvisited.push(start);
 
-        while(this.path.length !== 0) {
+        while(unvisited.length !== 0) {
             let currentNode = getLowestDistanceNode(this.path);
             unvisited = unvisited.filter(item => item === currentNode);
 

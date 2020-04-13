@@ -1,6 +1,6 @@
 
 import { Grid } from './grid.js';
-import { Dijkstra } from "./dijkstra";
+import { Dijkstra } from "./dijkstra.js";
 
 let start;
 let end;
@@ -11,7 +11,7 @@ $(document).ready(function () {
     grid.createGrid();
     //grid.logGrid();
 
-    dijkstra(grid);
+    //dijkstra(grid);
 
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.

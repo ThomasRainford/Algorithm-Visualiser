@@ -9,8 +9,6 @@ $(document).ready(function () {
     grid.createGrid();
     //grid.logGrid();
 
-    //dijkstra(grid);
-
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.
     let isMouseDown = false;
@@ -69,8 +67,6 @@ function dijkstra(grid) {
     drawPath(path, 50, function (node) {
         $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
     });
-
-
 }
 
 function drawPath(path, interval, callback) {
@@ -139,10 +135,7 @@ function moveStartEndNode(element, grid, selectedNode) {
     // ensure start node cannot replace end node and vice versa.
     if ((selectedNode.state === "start" && newNode.state !== "end") ||
         (selectedNode.state === "end" && newNode.state !== "start")) {
-
-        // set the variables start or end to selectedNode
-        setStartEndNode(selectedNode, grid);
-
+        
         newNode.state = selectedNode.state;
 
         // handle the html elements class's.
@@ -151,6 +144,9 @@ function moveStartEndNode(element, grid, selectedNode) {
 
         // the node the mouse is over becomes the old node
         selectedNode = newNode;
+
+        // set the variables start or end to selectedNode
+        setStartEndNode(selectedNode, grid);
 
         // set previous node to unvisited
         previousNode.state = "unvisited";

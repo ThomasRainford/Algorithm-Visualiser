@@ -1,52 +1,47 @@
 
 import { Fringe } from "./fringe";
 
-export function Dijkstra(start, end, grid) {
+export function Dijkstra(start) {
     this.path = [start];
 
     this.runDijkstra = function () {
-        let graph = grid.gridArray;
+        let fringes = [new Fringe(0, start, null)];
         let visited = [];
 
-        unvisited.push(start);
+        while(fringes.length > 0) {
+            let bestNode = expandFringe(fringes);
 
-        while(unvisited.length !== 0) {
-            let currentNode = getLowestDistanceNode(this.path);
-            unvisited = unvisited.filter(item => item === currentNode);
+            if(!visited.includes(bestNode)) {
+                visited.push(bestNode);
+                this.path.push(bestNode);
 
-            for(let node of currentNode.neighbours) {
-                if(!visited.includes(node)) {
-                    setMinimumDistance(this.path, node, node.weight)
-                    unvisited.push(node);
+                for(let neighbour of bestNode.neighbours) {
+                    if(!visited.includes(neighbour)) {
+                        let costToNeighbour = bestNode.cost + neighbour.weight;
+                        fringes.push(new Fringe(costToNeighbour, neighbour, bestNode));
+                    }
                 }
             }
-            visited.push(currentNode);
         }
-        return this.path;
-    }
 
-    function getLowestDistanceNode(path) {
-        let lowestDistanceNode = start;
-        let lowestDistance = Number.MAX_SAFE_INTEGER;
 
-        for(let node of path) {
-            let distance = node.distance;
-            if(distance < lowestDistance) {
-                lowestDistance = distance;
-                lowestDistanceNode = node;
+        function expandFringe(fringes) {
+            let lowestCost = Number.MAX_SAFE_INTEGER;
+            let lowestNode = start;
+
+            for(let fringe of fringes) {
+                let cost = fringe.cost;
+                if(cost < lowestCost) {
+                    lowestCost = cost;
+                    lowestNode = fringe.node;
+                }
             }
+            return lowestNode;
         }
-        return lowestDistanceNode;
-    }
 
 
-    function setMinimumDistance(path, node, weight) {
-        let startDistance = start.distance;
-        if(startDistance + weight < node.distance) {
-            node.distance = startDistance + weight;
-            path.push(node);
-        }
     }
+
 
 
 

@@ -50,7 +50,7 @@ $(document).ready(function () {
 /* Function which handle the path finding algorithms */
 
 function dijkstra(grid) {
-    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd(), grid);
+    let dijkstra = new Dijkstra(grid.getStart());
 
     dijkstra.runDijkstra();
 

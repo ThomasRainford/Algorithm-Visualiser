@@ -135,7 +135,7 @@ function moveStartEndNode(element, grid, selectedNode) {
     // ensure start node cannot replace end node and vice versa.
     if ((selectedNode.state === "start" && newNode.state !== "end") ||
         (selectedNode.state === "end" && newNode.state !== "start")) {
-        
+
         newNode.state = selectedNode.state;
 
         // handle the html elements class's.

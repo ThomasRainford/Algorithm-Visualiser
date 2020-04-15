@@ -14,7 +14,8 @@ export function Dijkstra(start, end) {
             if (canVisit(bestFringe.node, visited)) {
                 visited.push(bestFringe.node);
 
-                if(bestFringe.previous !== null) this.path.push(bestFringe.node);
+                if(bestFringe.previous !== null
+                && bestFringe.node !== end) this.path.push(bestFringe.node);
 
                 if (bestFringe.node === end) {
                     return this.path;

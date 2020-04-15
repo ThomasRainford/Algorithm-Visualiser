@@ -48,6 +48,11 @@ h1 {
     color: white;
 }
 
+.data-visited {
+    background-color: #e82929;
+    color: white;
+}
+
 /**
     Navbar styles
  */

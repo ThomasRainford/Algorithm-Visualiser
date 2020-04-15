@@ -99,7 +99,7 @@ export function Grid(width, height) {
      * @param row
      */
     this.createUnvisitedNode = function(tdClass, row) {
-        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "unvisited");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 1, "unvisited");
         this.gridArray[row].push(node);
     };
 
@@ -113,7 +113,7 @@ export function Grid(width, height) {
      * @returns {string} - the position of the node.
      */
     this.createStartNode = function(tdClass, row, col) {
-        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "start");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 1, "start");
         start = node;
         this.gridArray[row].push(node);
         return row + "-" + col;
@@ -129,7 +129,7 @@ export function Grid(width, height) {
      * @returns {string} - the position of the node.
      */
     this.createEndNode = function(tdClass, row, col) {
-        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "end");
+        let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 1, "end");
         end = node;
         this.gridArray[row].push(node);
         return row + "-" + col;

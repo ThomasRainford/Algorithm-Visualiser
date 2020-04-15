@@ -1,6 +1,6 @@
 
 import { Grid } from './grid.js';
-import { Dijkstra } from "./dijkstra.js";
+import { Dijkstra } from "./pathfinding/dijkstra/dijkstra.js";
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
@@ -50,11 +50,26 @@ $(document).ready(function () {
 /* Function which handle the path finding algorithms */
 
 function dijkstra(grid) {
-    let dijkstra = new Dijkstra(grid.getStart());
+    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
+    let path = dijkstra.runDijkstra();
 
-    dijkstra.runDijkstra();
+    drawPath(path, 10, function (node) {
+        $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+    });
 
 
+}
+
+function drawPath(path, interval, callback) {
+    let i = 0;
+    next();
+    function next() {
+        if(callback(path[i]) !== false) {
+            if (++i < path.length) {
+                setTimeout(next, interval);
+            }
+        }
+    }
 }
 
 

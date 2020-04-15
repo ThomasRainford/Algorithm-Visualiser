@@ -2,12 +2,14 @@
 import { Grid } from './grid.js';
 import { Dijkstra } from "./pathfinding/dijkstra/dijkstra.js";
 
+let algorithmSelected = false;
+
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
     grid.createGrid();
     //grid.logGrid();
 
-    dijkstra(grid);
+    //dijkstra(grid);
 
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.
@@ -41,6 +43,17 @@ $(document).ready(function () {
     $(".dropdown-menu button").click(function () {
         let text = $(this).text();
         $(".alg-activate").text("Run " + text);
+        algorithmSelected = true;
+    });
+
+    // run the selected algorithm when the run button is clicked
+    $(".alg-activate").on("click", function () {
+        if(algorithmSelected) {
+            console.log($(this).text());
+            if ($(this).text() === "Run Dijkstra") {
+                dijkstra(grid);
+            }
+        }
     });
 
 
@@ -53,7 +66,7 @@ function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let path = dijkstra.runDijkstra();
 
-    drawPath(path, 10, function (node) {
+    drawPath(path, 50, function (node) {
         $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
     });
 

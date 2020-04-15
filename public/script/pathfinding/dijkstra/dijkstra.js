@@ -1,11 +1,12 @@
 
+import { Fringe } from "./fringe";
+
 export function Dijkstra(start, end, grid) {
     this.path = [start];
 
     this.runDijkstra = function () {
         let graph = grid.gridArray;
         let visited = [];
-        let unvisited = [];
 
         unvisited.push(start);
 
@@ -27,6 +28,7 @@ export function Dijkstra(start, end, grid) {
     function getLowestDistanceNode(path) {
         let lowestDistanceNode = start;
         let lowestDistance = Number.MAX_SAFE_INTEGER;
+
         for(let node of path) {
             let distance = node.distance;
             if(distance < lowestDistance) {

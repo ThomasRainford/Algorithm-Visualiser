@@ -1,6 +1,9 @@
 
 import { Node } from './node.js';
 
+let start;
+let end;
+
 /**
  * Create a grid of size width and height.
  *
@@ -47,7 +50,6 @@ export function Grid(width, height) {
         }
 
         this.createNodeNeighbours();
-
 
         $(".table").append(tableHTML);
 
@@ -112,6 +114,7 @@ export function Grid(width, height) {
      */
     this.createStartNode = function(tdClass, row, col) {
         let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "start");
+        start = node;
         this.gridArray[row].push(node);
         return row + "-" + col;
     };
@@ -127,6 +130,7 @@ export function Grid(width, height) {
      */
     this.createEndNode = function(tdClass, row, col) {
         let node = new Node(this.getRowCol(tdClass)[0], this.getRowCol(tdClass)[1], 0, "end");
+        end = node;
         this.gridArray[row].push(node);
         return row + "-" + col;
     };
@@ -140,6 +144,22 @@ export function Grid(width, height) {
                 currentNode.neighbours = addNeighbours(currentNode, this.width, this.height, this.gridArray);
             }
         }
+    }
+
+    this.getStart = function () {
+        return start;
+    }
+
+    this.getEnd = function () {
+        return end;
+    }
+
+    this.setStart = function (node) {
+        start = node;
+    }
+
+    this.setEnd = function (node) {
+        end = node;
     }
 
     function addNeighbours(currentNode, width, height, gridArray) {

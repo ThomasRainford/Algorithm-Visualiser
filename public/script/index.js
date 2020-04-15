@@ -2,16 +2,12 @@
 import { Grid } from './grid.js';
 import { Dijkstra } from "./dijkstra.js";
 
-let start;
-let end;
-
-
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
     grid.createGrid();
     //grid.logGrid();
 
-    //dijkstra(grid);
+    dijkstra(grid);
 
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.
@@ -54,7 +50,8 @@ $(document).ready(function () {
 /* Function which handle the path finding algorithms */
 
 function dijkstra(grid) {
-    let dijkstra = new Dijkstra(start, end, grid);
+    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd(), grid);
+
     dijkstra.runDijkstra();
 
 
@@ -116,7 +113,7 @@ function moveStartEndNode(element, grid, selectedNode) {
         (selectedNode.state === "end" && newNode.state !== "start")) {
 
         // set the variables start or end to selectedNode
-        setStartEndNode(selectedNode);
+        setStartEndNode(selectedNode, grid);
 
         newNode.state = selectedNode.state;
 
@@ -137,14 +134,13 @@ function moveStartEndNode(element, grid, selectedNode) {
     }
 }
 
-function setStartEndNode(selectedNode) {
+function setStartEndNode(selectedNode, grid) {
     if(selectedNode.state === "start") {
-        start = selectedNode;
+        grid.setStart(selectedNode);
 
     } else {
-        end = selectedNode;
+        grid.setEnd(selectedNode);
     }
-
 }
 
 

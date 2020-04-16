@@ -69,16 +69,16 @@ function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
 
-    drawOutput(visited, 50, function (node) {
+    drawOutput(visited, 0, function (node) {
         if(node.state !== "start"
-        && node.state !== "end"){
+            && node.state !== "end"){
             $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
         }
     });
-    
-    drawOutput(getPath(grid), 50, function(node) {
-        if(node.state !== "start"
-            && node.state !== "end"){
+
+    drawOutput(getPath(grid), 0, function (node) {
+        if (node.state !== "start"
+            && node.state !== "end") {
             $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-path");
         }
     });

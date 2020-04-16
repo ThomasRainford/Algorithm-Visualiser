@@ -67,31 +67,51 @@ $(document).ready(function () {
  */
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
-    let path = dijkstra.runDijkstra();
+    let visited = dijkstra.runDijkstra();
 
-    drawPath(path, 50, function (node) {
-        $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+    drawOutput(visited, 50, function (node) {
+        if(node.state !== "start"
+        && node.state !== "end"){
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+        }
     });
+    
+    drawOutput(getPath(grid), 50, function(node) {
+        if(node.state !== "start"
+            && node.state !== "end"){
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-path");
+        }
+    });
+
+
 }
 
 /**
  * Draws the output of a path finding algorithm, with the
  * delay of each node being drawn being interval.
  *
- * @param path - The output of the algorithm
+ * @param output - The output of the algorithm
  * @param interval - The time between drawing each node
  * @param callback - The callback function which draws the node
  */
-function drawPath(path, interval, callback) {
+function drawOutput(output, interval, callback) {
     let i = 0;
     next();
     function next() {
-        if(callback(path[i]) !== false) {
-            if (++i < path.length) {
+        if(callback(output[i]) !== false) {
+            if (++i < output.length) {
                 setTimeout(next, interval);
             }
         }
     }
+}
+
+function getPath(grid) {
+    let path = [];
+    for(let node = grid.getEnd(); node != null; node = node.previous) {
+        path.push(node);
+    }
+    return path;
 }
 
 

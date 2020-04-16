@@ -2,7 +2,8 @@
 import { Fringe } from "./fringe.js";
 
 export function Dijkstra(start, end) {
-    this.path = [];
+    this.visited = [];
+
 
     /**
      * Carry's out the logic for the Dijkstra algorithm.
@@ -11,23 +12,22 @@ export function Dijkstra(start, end) {
      */
     this.runDijkstra = function () {
         let fringes = [new Fringe(0, start, null)];
-        let visited = [];
 
         while (fringes.length > 0) {
             let bestFringe = expandFringe(fringes);
 
-            if (canVisit(bestFringe.node, visited)) {
-                visited.push(bestFringe.node);
+            if (canVisit(bestFringe.node, this.visited)) {
+                this.visited.push(bestFringe.node);
 
-                if(bestFringe.previous !== null
-                && bestFringe.node !== end) this.path.push(bestFringe.node);
+                if(bestFringe.previous !== null)
+                 bestFringe.node.previous = bestFringe.previous;
 
                 if (bestFringe.node === end) {
-                    return this.path;
+                    return this.visited;
                 }
 
                 for (let neighbour of bestFringe.node.neighbours) {
-                    if (!visited.includes(neighbour)) {
+                    if (!this.visited.includes(neighbour)) {
                         let costToNeighbour = bestFringe.cost + neighbour.weight;
                         fringes.push(new Fringe(costToNeighbour, neighbour, bestFringe.node));
                     }

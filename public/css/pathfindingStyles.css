@@ -53,6 +53,11 @@ h1 {
     color: white;
 }
 
+.data-path {
+    background-color: #ecf13b;
+    color: white;
+}
+
 /**
     Navbar styles
  */

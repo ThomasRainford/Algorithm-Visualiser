@@ -1,5 +1,5 @@
 body {
-    background-color: #e8faff;
+    background-color: #b8f0f1;
 }
 
 h1 {
@@ -39,12 +39,22 @@ h1 {
 }
 
 .data-start {
-    background-color: #6bd35f;
+    background-color: #5cc251;
     color: white;
 }
 
 .data-end {
-    background-color: #318be0;
+    background-color: rgb(250, 72, 72);
+    color: white;
+}
+
+.data-visited {
+    background-color: #2985ff;
+    color: white;
+}
+
+.data-path {
+    background-color: #ecf13b;
     color: white;
 }
 

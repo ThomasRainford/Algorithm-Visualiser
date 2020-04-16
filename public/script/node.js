@@ -7,8 +7,10 @@
 * @param state
 */
 export function Node(row, col, weight, state) {
-    this.row = row;
-    this.col = col;
-    this.weight = weight;
+    this.row = parseInt(row);
+    this.col = parseInt(col);
+    this.weight = parseInt(weight);
     this.state = state;
+    this.neighbours = [];
+    this.previous = null;
 }

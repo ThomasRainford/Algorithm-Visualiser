@@ -1,5 +1,8 @@
 
 import { Grid } from './grid.js';
+import { Dijkstra } from "./pathfinding/dijkstra/dijkstra.js";
+
+let algorithmSelected = false;
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
@@ -38,31 +41,81 @@ $(document).ready(function () {
     $(".dropdown-menu button").click(function () {
         let text = $(this).text();
         $(".alg-activate").text("Run " + text);
+        algorithmSelected = true;
     });
 
-
-    // /* TEST: test selecting one td */
-    // // const td = "0-0";
-    // // $(".table tr.row td." + td).addClass("data-selected");
-    //
-    // /* TEST: Testing iterating over table to add/remove a td class */
-    // // class: button-fill
-    // $(".button-fill").on("click", function () {
-    //     $(".table tr.row td.data").each(function () {
-    //         //selectNode(this, false, grid);
-    //     });
-    // });
-    //
-    // // class: button-clear
-    // $(".button-clear").on("click", function () {
-    //     $(".table tr.row td.data").each(function () {
-    //         //selectNode(this, true, grid);
-    //     });
-    // });
+    // run the selected algorithm when the run button is clicked
+    $(".alg-activate").on("click", function () {
+        if(algorithmSelected) {
+            console.log($(this).text());
+            if ($(this).text() === "Run Dijkstra") {
+                dijkstra(grid);
+            }
+        }
+    });
 
 
 });
 
+
+/* Function which handle the path finding algorithms */
+
+/**
+ * Runs the dijkstra algorithm and draws the output.
+ *
+ * @param grid
+ */
+function dijkstra(grid) {
+    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
+    let visited = dijkstra.runDijkstra();
+
+    drawOutput(visited, 0, function (node) {
+        if(node.state !== "start"
+            && node.state !== "end"){
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+        }
+    });
+
+    drawOutput(getPath(grid), 0, function (node) {
+        if (node.state !== "start"
+            && node.state !== "end") {
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-path");
+        }
+    });
+
+
+}
+
+/**
+ * Draws the output of a path finding algorithm, with the
+ * delay of each node being drawn being interval.
+ *
+ * @param output - The output of the algorithm
+ * @param interval - The time between drawing each node
+ * @param callback - The callback function which draws the node
+ */
+function drawOutput(output, interval, callback) {
+    let i = 0;
+    next();
+    function next() {
+        if(callback(output[i]) !== false) {
+            if (++i < output.length) {
+                setTimeout(next, interval);
+            }
+        }
+    }
+}
+
+function getPath(grid) {
+    let path = [];
+    for(let node = grid.getEnd(); node != null; node = node.previous) {
+        path.push(node);
+    }
+    return path.reverse();
+}
+
+
+/* Function which handle the Grid UI */
 
 /**
  * Checks if the node to be selected is already selected.
@@ -125,6 +178,9 @@ function moveStartEndNode(element, grid, selectedNode) {
         // the node the mouse is over becomes the old node
         selectedNode = newNode;
 
+        // set the variables start or end to selectedNode
+        setStartEndNode(selectedNode, grid);
+
         // set previous node to unvisited
         previousNode.state = "unvisited";
 
@@ -132,6 +188,22 @@ function moveStartEndNode(element, grid, selectedNode) {
 
     } else {
         return selectedNode;
+    }
+}
+
+/**
+ * When the start or end node is moved then set the selected node
+ * to a start or end node.
+ *
+ * @param selectedNode - The node selected
+ * @param grid
+ */
+function setStartEndNode(selectedNode, grid) {
+    if(selectedNode.state === "start") {
+        grid.setStart(selectedNode);
+
+    } else {
+        grid.setEnd(selectedNode);
     }
 }
 

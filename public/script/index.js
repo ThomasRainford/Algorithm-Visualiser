@@ -111,7 +111,7 @@ function getPath(grid) {
     for(let node = grid.getEnd(); node != null; node = node.previous) {
         path.push(node);
     }
-    return path;
+    return path.reverse();
 }
 
 

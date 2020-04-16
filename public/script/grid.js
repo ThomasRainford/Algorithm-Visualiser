@@ -182,64 +182,48 @@ export function Grid(width, height) {
         if (currentNode.row === 0) { // top node
             if(currentNode.col === 0) { // top left
                 neighbours.push(gridArray[1][0]);
-                neighbours.push(gridArray[1][1]);
                 neighbours.push(gridArray[0][1]);
 
             } else if (currentNode.col === width-1) { // top right
                 neighbours.push(gridArray[1][width-1]);
-                neighbours.push(gridArray[1][width-2]);
                 neighbours.push(gridArray[0][width-2]);
 
             } else { // in-between
                 neighbours.push(gridArray[0][currentNode.col+1]);
-                neighbours.push(gridArray[currentNode.row+1][currentNode.col+1]);
                 neighbours.push(gridArray[currentNode.row+1][currentNode.col]);
-                neighbours.push(gridArray[currentNode.row+1][currentNode.col-1]);
                 neighbours.push(gridArray[0][currentNode.col-1]);
             }
 
         } else if (currentNode.row === height-1) { // bottom node
             if(currentNode.col === 0) { // bottom left
                 neighbours.push(gridArray[height-2][0]);
-                neighbours.push(gridArray[height-2][1]);
                 neighbours.push(gridArray[height-1][1]);
 
             } else if (currentNode.col === width-1) { // bottom right
                 neighbours.push(gridArray[height-1][width-2]);
-                neighbours.push(gridArray[height-2][width-2]);
                 neighbours.push(gridArray[height-2][width-1]);
 
             } else { // in-between
                 neighbours.push(gridArray[currentNode.row][currentNode.col-1]);
-                neighbours.push(gridArray[currentNode.row-1][currentNode.col-1]);
                 neighbours.push(gridArray[currentNode.row-1][currentNode.col]);
-                neighbours.push(gridArray[currentNode.row-1][currentNode.col+1]);
                 neighbours.push(gridArray[currentNode.row][currentNode.col+1]);
             }
 
         } else if (currentNode.col === 0) { // left node
             neighbours.push(gridArray[currentNode.row-1][currentNode.col]);
-            neighbours.push(gridArray[currentNode.row-1][currentNode.col+1]);
             neighbours.push(gridArray[currentNode.row][currentNode.col+1]);
-            neighbours.push(gridArray[currentNode.row+1][currentNode.col+1]);
             neighbours.push(gridArray[currentNode.row+1][currentNode.col]);
 
         } else if (currentNode.col === width - 1) { // right node
             neighbours.push(gridArray[currentNode.row+1][currentNode.col]);
-            neighbours.push(gridArray[currentNode.row+1][currentNode.col-1]);
             neighbours.push(gridArray[currentNode.row][currentNode.col-1]);
-            neighbours.push(gridArray[currentNode.row-1][currentNode.col-1]);
             neighbours.push(gridArray[currentNode.row-1][currentNode.col]);
 
         /* Non-edge neighbours */
         } else {
-            neighbours.push(gridArray[currentNode.row-1][currentNode.col-1]);
             neighbours.push(gridArray[currentNode.row-1][currentNode.col]);
-            neighbours.push(gridArray[currentNode.row-1][currentNode.col+1]);
             neighbours.push(gridArray[currentNode.row][currentNode.col+1]);
-            neighbours.push(gridArray[currentNode.row+1][currentNode.col+1]);
             neighbours.push(gridArray[currentNode.row+1][currentNode.col]);
-            neighbours.push(gridArray[currentNode.row+1][currentNode.col-1]);
             neighbours.push(gridArray[currentNode.row][currentNode.col-1]);
         }
         return neighbours;

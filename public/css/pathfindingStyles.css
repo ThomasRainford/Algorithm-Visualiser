@@ -1,5 +1,5 @@
 body {
-    background-color: #e8faff;
+    background-color: #b8f0f1;
 }
 
 h1 {
@@ -39,17 +39,17 @@ h1 {
 }
 
 .data-start {
-    background-color: #6bd35f;
+    background-color: #5cc251;
     color: white;
 }
 
 .data-end {
-    background-color: #318be0;
+    background-color: rgb(54, 54, 54);
     color: white;
 }
 
 .data-visited {
-    background-color: #e82929;
+    background-color: #5968d9;
     color: white;
 }
 

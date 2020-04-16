@@ -146,6 +146,8 @@ export function Grid(width, height) {
         }
     }
 
+    /* ----- Getters and Setters ----- */
+
     this.getStart = function () {
         return start;
     }
@@ -162,6 +164,17 @@ export function Grid(width, height) {
         end = node;
     }
 
+    /**
+     * Sets the given nodes neighbours. This function takes a 2D
+     * array of nodes and gives the given node an array of neighbours,
+     * so it creates a graph.
+     *
+     * @param currentNode - The current node to add neighbours too
+     * @param width - The width of the grid
+     * @param height - The height of the grid
+     * @param gridArray - The array of nodes
+     * @returns {[]} - The array of node neighbours for the current node
+     */
     function addNeighbours(currentNode, width, height, gridArray) {
         let neighbours = [];
 

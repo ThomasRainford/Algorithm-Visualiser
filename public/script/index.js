@@ -60,6 +60,11 @@ $(document).ready(function () {
 
 /* Function which handle the path finding algorithms */
 
+/**
+ * Runs the dijkstra algorithm and draws the output.
+ *
+ * @param grid
+ */
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let path = dijkstra.runDijkstra();
@@ -69,6 +74,14 @@ function dijkstra(grid) {
     });
 }
 
+/**
+ * Draws the output of a path finding algorithm, with the
+ * delay of each node being drawn being interval.
+ *
+ * @param path - The output of the algorithm
+ * @param interval - The time between drawing each node
+ * @param callback - The callback function which draws the node
+ */
 function drawPath(path, interval, callback) {
     let i = 0;
     next();
@@ -158,6 +171,13 @@ function moveStartEndNode(element, grid, selectedNode) {
     }
 }
 
+/**
+ * When the start or end node is moved then set the selected node
+ * to a start or end node.
+ *
+ * @param selectedNode - The node selected
+ * @param grid
+ */
 function setStartEndNode(selectedNode, grid) {
     if(selectedNode.state === "start") {
         grid.setStart(selectedNode);

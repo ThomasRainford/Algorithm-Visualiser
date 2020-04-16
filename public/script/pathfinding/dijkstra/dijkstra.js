@@ -4,6 +4,11 @@ import { Fringe } from "./fringe.js";
 export function Dijkstra(start, end) {
     this.path = [];
 
+    /**
+     * Carry's out the logic for the Dijkstra algorithm.
+     *
+     * @returns {[]} - An array of each node visited.
+     */
     this.runDijkstra = function () {
         let fringes = [new Fringe(0, start, null)];
         let visited = [];
@@ -31,6 +36,14 @@ export function Dijkstra(start, end) {
         }
     }
 
+    /**
+     * Evaluated the fringe fields and determines the
+     * best node for the algorithm to visit next.
+     *
+     * @param fringes - The array of fringes
+     * @returns {Fringe} - The fringe which contains
+     *                      the best node to visit next
+     */
     function expandFringe(fringes) {
         let lowestCost = Number.MAX_SAFE_INTEGER;
         let bestFringe = fringes[0];
@@ -45,7 +58,14 @@ export function Dijkstra(start, end) {
         fringes.splice(fringes.indexOf(bestFringe), 1);
         return bestFringe;
     }
-    
+
+    /**
+     * Determines whether a given node can be visited.
+     *
+     * @param node - The node to visit
+     * @param visited - The array of visited nodes
+     * @returns {boolean|boolean} - If the node is visitable
+     */
     function canVisit(node, visited) {
         return !visited.includes(node)
             && node.state !== "inaccessible";

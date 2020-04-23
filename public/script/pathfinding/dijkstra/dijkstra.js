@@ -23,6 +23,7 @@ export function Dijkstra(start, end) {
                  bestFringe.node.previous = bestFringe.previous;
 
                 if (bestFringe.node === end) {
+                    setVisited(this.visited);
                     return this.visited;
                 }
 
@@ -69,6 +70,14 @@ export function Dijkstra(start, end) {
     function canVisit(node, visited) {
         return !visited.includes(node)
             && node.state !== "inaccessible";
+    }
+
+    function setVisited(visited) {
+        for(let node of visited) {
+            if(node.state !== "end" && node.state !== "start") {
+                node.state = "visited";
+            }
+        }
     }
 
 

@@ -68,22 +68,23 @@ $(document).ready(function () {
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
+    let path = getPath(grid);
 
-    drawOutput(visited, 0, function (node) {
+    draw(visited, "data-visited", 0);
+    draw(path, "data-path", 0);
+
+
+
+}
+
+
+function draw(array, cssClass, delay) {
+    drawOutput(array, delay, function (node) {
         if(node.state !== "start"
             && node.state !== "end"){
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
         }
     });
-
-    drawOutput(getPath(grid), 0, function (node) {
-        if (node.state !== "start"
-            && node.state !== "end") {
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-path");
-        }
-    });
-
-
 }
 
 /**
@@ -109,7 +110,10 @@ function drawOutput(output, interval, callback) {
 function getPath(grid) {
     let path = [];
     for(let node = grid.getEnd(); node != null; node = node.previous) {
-        path.push(node);
+        if(node.state !== "start" && node.state !== "end"){
+            node.state = "path";
+            path.push(node);
+        }
     }
     return path.reverse();
 }

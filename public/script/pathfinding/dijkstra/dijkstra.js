@@ -23,8 +23,7 @@ export function Dijkstra(start, end) {
                  bestFringe.node.previous = bestFringe.previous;
 
                 if (bestFringe.node === end) {
-                    setVisited(this.visited);
-                    return this.visited;
+                    return setVisited(this.visited);
                 }
 
                 for (let neighbour of bestFringe.node.neighbours) {
@@ -78,6 +77,9 @@ export function Dijkstra(start, end) {
                 node.state = "visited";
             }
         }
+        visited = visited.filter(item => item !== start);
+        visited = visited.filter(item => item !== end);
+        return visited;
     }
 
 

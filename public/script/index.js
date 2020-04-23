@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
     $(document).mouseup(function () {
         isMouseDown = false;
-        grid.logGrid();
+        //grid.logGrid();
     });
 
     // Change the text of the alg-activate button to the selected dropdown menu item
@@ -83,7 +83,6 @@ function dijkstra(grid) {
  * @param delay - The delay between each node being drawn
  */
 function draw(array, delay) {
-    console.log(array);
     let startPath = false;
 
     drawOutput(array, delay, function (node) {

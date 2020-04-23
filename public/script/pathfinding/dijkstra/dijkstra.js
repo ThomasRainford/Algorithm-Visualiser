@@ -33,6 +33,7 @@ export function Dijkstra(start, end) {
                 }
             }
         }
+        return setVisited(this.visited);
     }
 
     /**

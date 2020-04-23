@@ -76,7 +76,12 @@ function dijkstra(grid) {
 
 }
 
-
+/**
+ * Draws the visited nodes then the path found.
+ *
+ * @param array - The array of nodes.
+ * @param delay - The delay between each node being drawn
+ */
 function draw(array, delay) {
     console.log(array);
     let startPath = false;
@@ -112,6 +117,13 @@ function drawOutput(output, interval, callback) {
     }
 }
 
+/**
+ * Creates an array which contains the nodes which are
+ * part of the path found.
+ *
+ * @param grid
+ * @returns {*[]} - Array of nodes in the path
+ */
 function getPath(grid) {
     let path = [];
     for(let node = grid.getEnd(); node != null; node = node.previous) {

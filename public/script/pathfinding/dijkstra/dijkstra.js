@@ -4,7 +4,6 @@ import { Fringe } from "./fringe.js";
 export function Dijkstra(start, end) {
     this.visited = [];
 
-
     /**
      * Carry's out the logic for the Dijkstra algorithm.
      *
@@ -23,7 +22,7 @@ export function Dijkstra(start, end) {
                  bestFringe.node.previous = bestFringe.previous;
 
                 if (bestFringe.node === end) {
-                    return this.visited;
+                    return setVisited(this.visited);
                 }
 
                 for (let neighbour of bestFringe.node.neighbours) {
@@ -69,6 +68,24 @@ export function Dijkstra(start, end) {
     function canVisit(node, visited) {
         return !visited.includes(node)
             && node.state !== "inaccessible";
+    }
+
+    /**
+     * Sets the nodes states in the visited array to
+     * 'visited'.
+     *
+     * @param visited - The array of visited nodes.
+     * @returns {*} - The array of visited node minus
+     *                the start and end nodes.
+     */
+    function setVisited(visited) {
+        visited = visited.filter(item => item !== start);
+        visited = visited.filter(item => item !== end);
+
+        for(let node of visited) {
+            node.state = "visited";
+        }
+        return visited;
     }
 
 

@@ -34,7 +34,7 @@ $(document).ready(function () {
     });
     $(document).mouseup(function () {
         isMouseDown = false;
-        grid.logGrid();
+        //grid.logGrid();
     });
 
     // Change the text of the alg-activate button to the selected dropdown menu item
@@ -68,22 +68,32 @@ $(document).ready(function () {
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
+    let path = getPath(grid);
 
-    drawOutput(visited, 0, function (node) {
-        if(node.state !== "start"
-            && node.state !== "end"){
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-visited");
+    draw(visited.concat(path), 5);
+
+
+
+}
+
+/**
+ * Draws the visited nodes then the path found.
+ *
+ * @param array - The array of nodes.
+ * @param delay - The delay between each node being drawn
+ */
+function draw(array, delay) {
+    let startPath = false;
+
+    drawOutput(array, delay, function (node) {
+        if(node.state === "start") startPath = true;
+
+        let cssClass = setCssClass(startPath);
+
+        if(node.state !== "start" && node.state !== "end"){
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
         }
     });
-
-    drawOutput(getPath(grid), 0, function (node) {
-        if (node.state !== "start"
-            && node.state !== "end") {
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-path");
-        }
-    });
-
-
 }
 
 /**
@@ -106,12 +116,27 @@ function drawOutput(output, interval, callback) {
     }
 }
 
+/**
+ * Creates an array which contains the nodes which are
+ * part of the path found.
+ *
+ * @param grid
+ * @returns {*[]} - Array of nodes in the path
+ */
 function getPath(grid) {
     let path = [];
     for(let node = grid.getEnd(); node != null; node = node.previous) {
         path.push(node);
     }
     return path.reverse();
+}
+
+function setCssClass(startPath) {
+    if(startPath) {
+        return "data-path";
+    } else {
+        return "data-visited";
+    }
 }
 
 

@@ -62,10 +62,23 @@ h1 {
     Navbar styles
  */
 
+/* Nav containers */
 .main-nav {
     width: 65%;
 }
 
+.search-nav {
+    width: 30%;
+}
+
+/* Nav buttons */
+.grid-clear {
+
+}
+
+
+
+/* Nav elements */
 .navbar {
     margin-bottom: 5px;
 }

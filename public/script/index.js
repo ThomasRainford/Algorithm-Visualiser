@@ -56,6 +56,12 @@ $(document).ready(function () {
         }
     });
 
+    $(".grid-clear").on("click", function () {
+        //TODO: run a function which sets all grid points to unvisited (except start and end).
+        //TODO: Set all nodes states to unvisited (excepts start and end).
+        //TODO: ensure this cannot happen during path search.
+    });
+
 
 });
 

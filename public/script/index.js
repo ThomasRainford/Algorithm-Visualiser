@@ -51,6 +51,8 @@ $(document).ready(function () {
             if ($(this).text() === "Run Dijkstra") {
                 dijkstra(grid);
             }
+        } else {
+            $(this).text("Select Algorithm");
         }
     });
 
@@ -71,9 +73,6 @@ function dijkstra(grid) {
     let path = getPath(grid);
 
     draw(visited.concat(path), 5);
-
-
-
 }
 
 /**

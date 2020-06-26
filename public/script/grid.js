@@ -156,8 +156,9 @@ export function Grid(width, height) {
         for(let row = 0; row < this.height; row++) {
             for (let col = 0; col < this.width; col++) {
                 let currentNode = this.gridArray[row][col];
-                if(currentNode.state !== "start" || currentNode.state !== "end")
-                currentNode.state = "unvisited";
+                if(currentNode.state !== "start" && currentNode.state !== "end") {
+                    currentNode.state = "unvisited";
+                }
             }
         }
     }

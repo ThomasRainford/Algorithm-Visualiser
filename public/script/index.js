@@ -8,7 +8,7 @@ $(document).ready(function () {
     grid.createGrid();
     //grid.logGrid();
 
-    //
+    // Handles all input to the grid.
     handleGridInput(grid);
 
     // Change the text of the alg-activate button to the selected dropdown menu item
@@ -24,6 +24,8 @@ $(document).ready(function () {
             console.log($(this).text());
             if ($(this).text() === "Run Dijkstra") {
                 dijkstra(grid);
+            } else if ($(this).text() === "Run A* Search") {
+                aStar(grid);
             }
         } else {
             $(this).text("Select Algorithm");
@@ -34,7 +36,6 @@ $(document).ready(function () {
     $(".grid-clear").on("click", function () {
         //TODO: ensure this cannot happen during path search.
         clearGrid(grid);
-
 
     });
 
@@ -110,6 +111,12 @@ function dijkstra(grid) {
 
     draw(visited.concat(path), 5);
 }
+
+function aStar(grid) {
+
+}
+
+/* =================================================== */
 
 /**
  * Draws the visited nodes then the path found.

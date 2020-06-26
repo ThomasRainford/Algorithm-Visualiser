@@ -135,6 +135,9 @@ export function Grid(width, height) {
         return row + "-" + col;
     };
 
+    /**
+     * Set the nodes neighbours.
+     */
     this.createNodeNeighbours = function () {
         console.log(this.gridArray);
         console.log(this.width + " " + this.height);
@@ -142,6 +145,19 @@ export function Grid(width, height) {
             for(let col = 0; col < this.width; col++) {
                 let currentNode = this.gridArray[row][col];
                 currentNode.neighbours = addNeighbours(currentNode, this.width, this.height, this.gridArray);
+            }
+        }
+    }
+
+    /**
+     * Clear the grid. Set all nodes except start and end to unvisited.
+     */
+    this.clearGrid = function () {
+        for(let row = 0; row < this.height; row++) {
+            for (let col = 0; col < this.width; col++) {
+                let currentNode = this.gridArray[row][col];
+                if(currentNode.state !== "start" || currentNode.state !== "end")
+                currentNode.state = "unvisited";
             }
         }
     }

@@ -56,17 +56,33 @@ $(document).ready(function () {
         }
     });
 
+    // clear the grid when button clicked.
     $(".grid-clear").on("click", function () {
         //TODO: run a function which sets all grid points to unvisited (except start and end).
         //TODO: Set all nodes states to unvisited (excepts start and end).
         //TODO: ensure this cannot happen during path search.
+        clearGrid(grid);
+        grid.logGrid();
+
     });
 
 
 });
 
+function clearGrid(grid) {
+    grid.clearGrid();
+    for(let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
+                .removeClass("data-selected");
+        }
+    }
+}
 
-/* Function which handle the path finding algorithms */
+
+/* Functions which handle the path finding algorithms */
 
 /**
  * Runs the dijkstra algorithm and draws the output.

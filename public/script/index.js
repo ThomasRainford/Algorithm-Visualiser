@@ -1,6 +1,5 @@
-
-import { Grid } from './grid.js';
-import { Dijkstra } from "./pathfinding/dijkstra/dijkstra.js";
+import {Grid} from './grid.js';
+import {Dijkstra} from "./pathfinding/dijkstra/dijkstra.js";
 
 let algorithmSelected = false;
 
@@ -9,6 +8,47 @@ $(document).ready(function () {
     grid.createGrid();
     //grid.logGrid();
 
+    // Handles all input to the grid.
+    handleGridInput(grid);
+
+    // Change the text of the alg-activate button to the selected dropdown menu item
+    $(".dropdown-menu button").click(function () {
+        let text = $(this).text();
+        $(".alg-activate").text("Run " + text);
+        algorithmSelected = true;
+    });
+
+    // run the selected algorithm when the run button is clicked
+    $(".alg-activate").on("click", function () {
+        if (algorithmSelected) {
+            console.log($(this).text());
+            if ($(this).text() === "Run Dijkstra") {
+                dijkstra(grid);
+            } else if ($(this).text() === "Run A* Search") {
+                aStar(grid);
+            }
+        } else {
+            $(this).text("Select Algorithm");
+        }
+    });
+
+    // clear the grid when button clicked.
+    $(".grid-clear").on("click", function () {
+        //TODO: ensure this cannot happen during path search.
+        clearGrid(grid);
+
+    });
+
+
+});
+
+/**
+ * Handles the movement of the start and end nodes.
+ * Handles the drawing of inaccessible nodes.
+ *
+ * @param grid - The grid of nodes.
+ */
+function handleGridInput(grid) {
     // When the mouse is dragged around the table, select the cells
     // which the mouse is over if the mouse is down.
     let isMouseDown = false;
@@ -36,29 +76,28 @@ $(document).ready(function () {
         isMouseDown = false;
         //grid.logGrid();
     });
+}
 
-    // Change the text of the alg-activate button to the selected dropdown menu item
-    $(".dropdown-menu button").click(function () {
-        let text = $(this).text();
-        $(".alg-activate").text("Run " + text);
-        algorithmSelected = true;
-    });
-
-    // run the selected algorithm when the run button is clicked
-    $(".alg-activate").on("click", function () {
-        if(algorithmSelected) {
-            console.log($(this).text());
-            if ($(this).text() === "Run Dijkstra") {
-                dijkstra(grid);
-            }
+/**
+ * Iterates through grid and removes all classes which are not
+ * start or end.
+ *
+ * @param grid - The grid of nodes.
+ */
+function clearGrid(grid) {
+    grid.clearGrid();
+    for (let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
+                .removeClass("data-selected");
         }
-    });
+    }
+}
 
 
-});
-
-
-/* Function which handle the path finding algorithms */
+/* Functions which handle the path finding algorithms */
 
 /**
  * Runs the dijkstra algorithm and draws the output.
@@ -71,10 +110,13 @@ function dijkstra(grid) {
     let path = getPath(grid);
 
     draw(visited.concat(path), 5);
+}
 
-
+function aStar(grid) {
 
 }
+
+/* =================================================== */
 
 /**
  * Draws the visited nodes then the path found.
@@ -86,11 +128,11 @@ function draw(array, delay) {
     let startPath = false;
 
     drawOutput(array, delay, function (node) {
-        if(node.state === "start") startPath = true;
+        if (node.state === "start") startPath = true;
 
         let cssClass = setCssClass(startPath);
 
-        if(node.state !== "start" && node.state !== "end"){
+        if (node.state !== "start" && node.state !== "end") {
             $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
         }
     });
@@ -107,8 +149,9 @@ function draw(array, delay) {
 function drawOutput(output, interval, callback) {
     let i = 0;
     next();
+
     function next() {
-        if(callback(output[i]) !== false) {
+        if (callback(output[i]) !== false) {
             if (++i < output.length) {
                 setTimeout(next, interval);
             }
@@ -125,14 +168,22 @@ function drawOutput(output, interval, callback) {
  */
 function getPath(grid) {
     let path = [];
-    for(let node = grid.getEnd(); node != null; node = node.previous) {
+    for (let node = grid.getEnd(); node != null; node = node.previous) {
         path.push(node);
     }
     return path.reverse();
 }
 
+/**
+ * If the path has started return the name of the css class used
+ * for displaying the path, otherwise return the name of the
+ * css class which displays the search.
+ *
+ * @param startPath - If the path has started or not.
+ * @returns {string} - Name of the css class.
+ */
 function setCssClass(startPath) {
-    if(startPath) {
+    if (startPath) {
         return "data-path";
     } else {
         return "data-visited";
@@ -224,7 +275,7 @@ function moveStartEndNode(element, grid, selectedNode) {
  * @param grid
  */
 function setStartEndNode(selectedNode, grid) {
-    if(selectedNode.state === "start") {
+    if (selectedNode.state === "start") {
         grid.setStart(selectedNode);
 
     } else {
@@ -234,10 +285,11 @@ function setStartEndNode(selectedNode, grid) {
 
 
 /**
+ *  Gets a node from the grid.
  *
- * @param element
- * @param grid
- * @returns {*}
+ * @param element - The html table element clicked on.
+ * @param grid - The grid of node.
+ * @returns {*} - A node.
  */
 function getNode(element, grid) {
     return grid.gridArray[parseInt($(element).parent().index())][parseInt($(element).index())];

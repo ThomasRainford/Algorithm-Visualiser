@@ -141,6 +141,7 @@ function draw(array, delay) {
             $(".grid-clear").removeAttr("disabled");
         }
     });
+    $(".grid-clear").removeAttr("disabled");
 }
 
 /**

@@ -21,13 +21,14 @@ $(document).ready(function () {
     // run the selected algorithm when the run button is clicked
     $(".alg-activate").on("click", function () {
         if (algorithmSelected) {
-            $(".alg-activate").attr("disabled", "disabled");
+            //$(".alg-activate").attr("disabled", "disabled");
             console.log($(this).text());
             if ($(this).text() === "Run Dijkstra") {
                 dijkstra(grid);
             } else if ($(this).text() === "Run A* Search") {
                 aStar(grid);
             }
+            $(".alg-activate").text("Stop Algorithm");
         } else {
             $(this).text("Select Algorithm");
         }
@@ -35,7 +36,7 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     $(".grid-clear").on("click", function () {
-        $(".alg-activate").removeAttr("disabled");
+        $(".alg-activate").text("Run Dijkstra"); //TODO: Add variable.
         clearGrid(grid);
 
     });

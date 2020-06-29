@@ -140,11 +140,8 @@ function draw(array, delay) {
         } else {
             $(".grid-clear").removeAttr("disabled");
         }
-
-
     });
     $(".grid-clear").removeAttr("disabled");
-
 }
 
 /**

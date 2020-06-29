@@ -21,7 +21,6 @@ $(document).ready(function () {
     // run the selected algorithm when the run button is clicked
     $(".alg-activate").on("click", function () {
         if (algorithmSelected) {
-            //$(".alg-activate").attr("disabled", "disabled");
             console.log($(this).text());
             if ($(this).text() === "Run Dijkstra") {
                 dijkstra(grid);
@@ -36,9 +35,8 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     $(".grid-clear").on("click", function () {
-        $(".alg-activate").text("Run Dijkstra"); //TODO: Add variable.
+        $(".alg-activate").text("Run Dijkstra").removeAttr("disabled"); //TODO: Add variable for text value.
         clearGrid(grid);
-
     });
 
 
@@ -142,8 +140,11 @@ function draw(array, delay) {
         } else {
             $(".grid-clear").removeAttr("disabled");
         }
+
+
     });
     $(".grid-clear").removeAttr("disabled");
+
 }
 
 /**
@@ -164,8 +165,15 @@ function drawOutput(output, interval, callback) {
     function next() {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
-                setTimeout(next, interval);
                 $(".grid-clear").attr("disabled", "disabled");
+                let timer = setTimeout(next, interval);
+
+                // Stop the timer when clicked.
+                $(".alg-activate").on("click", function () {
+                    $(".grid-clear").removeAttr("disabled");
+                    $(this).attr("disabled", "disabled");
+                    clearTimeout(timer);
+                });
             }
         }
     }

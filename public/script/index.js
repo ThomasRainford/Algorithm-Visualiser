@@ -20,8 +20,8 @@ $(document).ready(function () {
 
     // run the selected algorithm when the run button is clicked
     $(".alg-activate").on("click", function () {
-        $(".alg-activate").attr("disabled", "disabled");
         if (algorithmSelected) {
+            $(".alg-activate").attr("disabled", "disabled");
             console.log($(this).text());
             if ($(this).text() === "Run Dijkstra") {
                 dijkstra(grid);

@@ -110,6 +110,7 @@ function dijkstra(grid) {
     let path = getPath(grid);
 
     draw(visited.concat(path), 5);
+
 }
 
 function aStar(grid) {
@@ -120,6 +121,8 @@ function aStar(grid) {
 
 /**
  * Draws the visited nodes then the path found.
+ *
+ * Re-enables the Clear Path button once path has been found.
  *
  * @param array - The array of nodes.
  * @param delay - The delay between each node being drawn
@@ -134,6 +137,8 @@ function draw(array, delay) {
 
         if (node.state !== "start" && node.state !== "end") {
             $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+        } else {
+            $(".grid-clear").removeAttr("disabled");
         }
     });
 }
@@ -141,6 +146,9 @@ function draw(array, delay) {
 /**
  * Draws the output of a path finding algorithm, with the
  * delay of each node being drawn being interval.
+ *
+ * Disables the Clear Grid button to ensure it is not clicked
+ * during the search.
  *
  * @param output - The output of the algorithm
  * @param interval - The time between drawing each node
@@ -154,6 +162,7 @@ function drawOutput(output, interval, callback) {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
                 setTimeout(next, interval);
+                $(".grid-clear").attr("disabled", "disabled");
             }
         }
     }

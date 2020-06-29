@@ -20,6 +20,7 @@ $(document).ready(function () {
 
     // run the selected algorithm when the run button is clicked
     $(".alg-activate").on("click", function () {
+        $(".alg-activate").attr("disabled", "disabled");
         if (algorithmSelected) {
             console.log($(this).text());
             if ($(this).text() === "Run Dijkstra") {
@@ -34,7 +35,7 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     $(".grid-clear").on("click", function () {
-        //TODO: ensure this cannot happen during path search.
+        $(".alg-activate").removeAttr("disabled");
         clearGrid(grid);
 
     });

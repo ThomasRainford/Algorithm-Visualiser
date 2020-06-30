@@ -1,7 +1,40 @@
 import {Grid} from './grid.js';
 import {Dijkstra} from "./pathfinding/dijkstra/dijkstra.js";
 
+/**
+ * Keeps track of when an algorithm is selected.
+ *
+ * @type {boolean}
+ */
 let algorithmSelected = false;
+
+/**
+ *
+ *
+ * @type {number}
+ */
+let delay = 5;
+
+/**
+ *
+ *
+ * @type {string}
+ */
+let currentAlgorithm = "";
+
+/**
+ *
+ *
+ * @type {*[]}
+ */
+let searchProgress = [];
+
+/**
+ *
+ *
+ * @type {*[]}
+ */
+let completeSearch = [];
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
@@ -31,29 +64,38 @@ $(document).ready(function () {
 });
 
 /**
+ * Handle the button which activates the algorithm. After algorithm
+ * has started executing, the button will then act as a play/pause
+ * button.
  *
- *
- * @param grid
+ * @param grid - The grid of nodes.
  */
 function handleAlgActivate(grid) {
     $(".alg-activate").on("click", function () {
         if (algorithmSelected) {
-            console.log($(this).text());
+            let text = $(this).text();
+            console.log(text);
             // Handle algorithm running state.
-            if ($(this).text().includes("Run")) {
-                if ($(this).text() === "Run Dijkstra") {
-                    dijkstra(grid);
-                } else if ($(this).text() === "Run A* Search") {
+            if (text.includes("Run")) {
+                if (text === "Run Dijkstra") {
+                    completeSearch = dijkstra(grid);
+                } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
                 $(".alg-activate").text("Stop Algorithm");
-            // Handle algorithm stopped state.
-            } else if ($(this).text().includes("Stop")) {
+                // Handle algorithm stopped state.
+            } else if (text.includes("Stop")) {
                 $(this).text("Resume");
                 $(".grid-clear").removeAttr("disabled");
 
-            } else if($(this).text().includes("Resume")) {
-                
+            } else if (text.includes("Resume")) {
+                if(currentAlgorithm === "dijkstra") {
+                    let remainder = completeSearch.filter(function (e1) {
+                        return !searchProgress.includes(e1);
+                    })
+                    draw(remainder, delay);
+                }
+                $(".alg-activate").text("Stop Algorithm");
             }
         } else {
             $(this).text("Select Algorithm");
@@ -78,7 +120,6 @@ function handleGridInput(grid) {
         if (selectedNode.state !== "start" || selectedNode.state !== "end") {
             selectNode(this, grid);
         }
-
         return false;
 
     }).mouseover(function () {
@@ -121,19 +162,24 @@ function clearGrid(grid) {
 /**
  * Runs the dijkstra algorithm and draws the output.
  *
- * @param grid
+ * @param grid - The grid of nodes.
+ * @return {*[]} - The search array.
  */
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
     let path = getPath(grid);
 
-    draw(visited.concat(path), 5);
+    currentAlgorithm = "dijkstra";
 
+    draw(visited.concat(path), delay);
+
+    return visited.concat(path);
 }
 
 function aStar(grid) {
 
+    currentAlgorithm = "aStar";
 }
 
 /* =================================================== */
@@ -178,12 +224,15 @@ function drawOutput(output, interval, callback) {
     let i = 0;
     next();
 
+    // Keep track of the search/path progress
+    searchProgress[i] = output[i];
+
     function next() {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
                 $(".grid-clear").attr("disabled", "disabled");
                 let timer = setTimeout(next, interval);
-
+                
                 // Stop the timer when clicked.
                 $(".alg-activate").on("click", function () {
                     clearTimeout(timer);

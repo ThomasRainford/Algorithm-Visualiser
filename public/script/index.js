@@ -22,19 +22,6 @@ let delay = 5;
  */
 let currentAlgorithm = "";
 
-/**
- *
- *
- * @type {*[]}
- */
-let searchProgress = [];
-
-/**
- *
- *
- * @type {*[]}
- */
-let completeSearch = [];
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
@@ -82,20 +69,6 @@ function handleAlgActivate(grid) {
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
-                $(".alg-activate").text("Stop Algorithm");
-                // Handle algorithm stopped state.
-            } else if (text.includes("Stop")) {
-                $(this).text("Resume");
-                $(".grid-clear").removeAttr("disabled");
-
-            } else if (text.includes("Resume")) {
-                if(currentAlgorithm === "dijkstra") {
-                    let remainder = completeSearch.filter(function (e1) {
-                        return !searchProgress.includes(e1);
-                    })
-                    draw(remainder, delay);
-                }
-                $(".alg-activate").text("Stop Algorithm");
             }
         } else {
             $(this).text("Select Algorithm");
@@ -168,13 +141,11 @@ function clearGrid(grid) {
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
-    let path = getPath(grid);
-
+    let fullSearch = visited.concat(getPath(grid));
     currentAlgorithm = "dijkstra";
 
-    draw(visited.concat(path), delay);
-
-    return visited.concat(path);
+    draw(fullSearch, delay);
+    return fullSearch;
 }
 
 function aStar(grid) {
@@ -224,19 +195,12 @@ function drawOutput(output, interval, callback) {
     let i = 0;
     next();
 
-    // Keep track of the search/path progress
-    searchProgress[i] = output[i];
-
     function next() {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
+
                 $(".grid-clear").attr("disabled", "disabled");
-                let timer = setTimeout(next, interval);
-                
-                // Stop the timer when clicked.
-                $(".alg-activate").on("click", function () {
-                    clearTimeout(timer);
-                });
+                setTimeout(next, interval);
             }
         }
     }

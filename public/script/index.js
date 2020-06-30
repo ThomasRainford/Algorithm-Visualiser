@@ -19,19 +19,7 @@ $(document).ready(function () {
     });
 
     // run the selected algorithm when the run button is clicked
-    $(".alg-activate").on("click", function () {
-        if (algorithmSelected) {
-            console.log($(this).text());
-            if ($(this).text() === "Run Dijkstra") {
-                dijkstra(grid);
-            } else if ($(this).text() === "Run A* Search") {
-                aStar(grid);
-            }
-            $(".alg-activate").text("Stop Algorithm");
-        } else {
-            $(this).text("Select Algorithm");
-        }
-    });
+    handleAlgActivate(grid);
 
     // clear the grid when button clicked.
     $(".grid-clear").on("click", function () {
@@ -41,6 +29,37 @@ $(document).ready(function () {
 
 
 });
+
+/**
+ *
+ *
+ * @param grid
+ */
+function handleAlgActivate(grid) {
+    $(".alg-activate").on("click", function () {
+        if (algorithmSelected) {
+            console.log($(this).text());
+            // Handle algorithm running state.
+            if ($(this).text().includes("Run")) {
+                if ($(this).text() === "Run Dijkstra") {
+                    dijkstra(grid);
+                } else if ($(this).text() === "Run A* Search") {
+                    aStar(grid);
+                }
+                $(".alg-activate").text("Stop Algorithm");
+            // Handle algorithm stopped state.
+            } else if ($(this).text().includes("Stop")) {
+                $(this).text("Resume");
+                $(".grid-clear").removeAttr("disabled");
+
+            } else if($(this).text().includes("Resume")) {
+                
+            }
+        } else {
+            $(this).text("Select Algorithm");
+        }
+    });
+}
 
 /**
  * Handles the movement of the start and end nodes.
@@ -167,8 +186,6 @@ function drawOutput(output, interval, callback) {
 
                 // Stop the timer when clicked.
                 $(".alg-activate").on("click", function () {
-                    $(".grid-clear").removeAttr("disabled");
-                    $(this).attr("disabled", "disabled");
                     clearTimeout(timer);
                 });
             }

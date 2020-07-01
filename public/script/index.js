@@ -1,5 +1,6 @@
 import {Grid} from './grid.js';
 import {Dijkstra} from "./pathfinding/dijkstra/dijkstra.js";
+import {AStar} from "./pathfinding/astar/aStarSearch";
 
 /**
  * Keeps track of when an algorithm is selected.
@@ -65,7 +66,7 @@ function handleAlgActivate(grid) {
             // Handle algorithm running state.
             if (text.includes("Run")) {
                 if (text === "Run Dijkstra") {
-                    completeSearch = dijkstra(grid);
+                    dijkstra(grid);
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
@@ -136,7 +137,6 @@ function clearGrid(grid) {
  * Runs the dijkstra algorithm and draws the output.
  *
  * @param grid - The grid of nodes.
- * @return {*[]} - The search array.
  */
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
@@ -145,12 +145,20 @@ function dijkstra(grid) {
     currentAlgorithm = "dijkstra";
 
     draw(fullSearch, delay);
-    return fullSearch;
 }
 
+/**
+ * Runs the A* search algorithm and draws the output.
+ *
+ * @param grid - The grid of nodes.
+ */
 function aStar(grid) {
-
+    let aStar = new AStar(grid.getStart(), grid.getEnd());
+    let visited = aStar.runAStar();
+    let fullSearch = visited.concat(getPath(grid));
     currentAlgorithm = "aStar";
+
+    draw(fullSearch, delay)
 }
 
 /* =================================================== */

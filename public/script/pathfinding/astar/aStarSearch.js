@@ -24,9 +24,8 @@ export function AStar(start, end) {
 
                 for (let neighbour of bestFringe.node.neighbours) {
                     if (!this.visited.includes(neighbour)) {
-                        g = g + neighbour.weight;
-                        f = f + calcHeuristic(neighbour);
-                        fringes.push(new Fringe(neighbour, bestFringe.node, g, f));
+                        g = bestFringe.g + neighbour.weight;
+                        fringes.push(new Fringe(neighbour, bestFringe.node, g, calcF(neighbour)));
                     }
                 }
             }
@@ -45,7 +44,7 @@ export function AStar(start, end) {
         let y2 = end.row
 
         return Math.sqrt((y2 - y1) * (y2 - y1)
-            + (x2 - x1) * (x2 - x2));
+            + (x2 - x1) * (x2 - x1));
     }
 
     /**

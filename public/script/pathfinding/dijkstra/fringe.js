@@ -1,8 +1,8 @@
 /**
- * Creates a fringe for the path finding algorithms.
+ * Creates a fringe for the Dijkstra path finding algorithm.
  *
  * @param cost - The weight value of the node
- * @param node - The node
+ * @param node - The current node
  * @param previous - The previous node
  * @constructor
  */

@@ -1,7 +1,32 @@
 import {Grid} from './grid.js';
 import {Dijkstra} from "./pathfinding/dijkstra/dijkstra.js";
+import {AStar} from "./pathfinding/astar/aStarSearch.js";
 
+/**
+ * Keeps track of when an algorithm is selected.
+ *
+ * @type {boolean}
+ */
 let algorithmSelected = false;
+
+let algorithmStarted = false;
+
+/**
+ *
+ *
+ * @type {number}
+ */
+let delay = 5;
+
+/**
+ *
+ *
+ * @type {string}
+ */
+let currentAlgorithm = "";
+
+let timer = undefined;
+
 
 $(document).ready(function () {
     let grid = new Grid($(window).width() / 30, $(window).height() / 30);
@@ -19,28 +44,44 @@ $(document).ready(function () {
     });
 
     // run the selected algorithm when the run button is clicked
+    handleAlgActivate(grid);
+
+    // clear the grid when button clicked.
+    $(".grid-clear").on("click", function () {
+        $(".alg-activate").text("Run Dijkstra").removeAttr("disabled"); //TODO: Add variable for text value.
+        clearGrid(grid);
+    });
+
+
+});
+
+/**
+ * Handle the button which activates the algorithm. After algorithm
+ * has started executing, the button will then act as a play/pause
+ * button.
+ *
+ * @param grid - The grid of nodes.
+ */
+function handleAlgActivate(grid) {
     $(".alg-activate").on("click", function () {
         if (algorithmSelected) {
-            console.log($(this).text());
-            if ($(this).text() === "Run Dijkstra") {
-                dijkstra(grid);
-            } else if ($(this).text() === "Run A* Search") {
-                aStar(grid);
+            let text = $(this).text();
+            console.log(text);
+            // Handle algorithm running state.
+            if (text.includes("Run")) {
+                clearSearch(grid);
+                if (text === "Run Dijkstra") {
+                    dijkstra(grid);
+                } else if (text === "Run A* Search") {
+                    aStar(grid);
+                }
+
             }
         } else {
             $(this).text("Select Algorithm");
         }
     });
-
-    // clear the grid when button clicked.
-    $(".grid-clear").on("click", function () {
-        //TODO: ensure this cannot happen during path search.
-        clearGrid(grid);
-
-    });
-
-
-});
+}
 
 /**
  * Handles the movement of the start and end nodes.
@@ -59,7 +100,6 @@ function handleGridInput(grid) {
         if (selectedNode.state !== "start" || selectedNode.state !== "end") {
             selectNode(this, grid);
         }
-
         return false;
 
     }).mouseover(function () {
@@ -79,8 +119,9 @@ function handleGridInput(grid) {
 }
 
 /**
- * Iterates through grid and removes all classes which are not
- * start or end.
+ * Clears the node array and removes css classes from
+ * the grid table. Completely clears the grid except
+ * for the start and end nodes.
  *
  * @param grid - The grid of nodes.
  */
@@ -94,6 +135,26 @@ function clearGrid(grid) {
                 .removeClass("data-selected");
         }
     }
+    clearTimeout(timer);
+}
+
+/**
+ * Clears the node array and removes css classes from
+ * the grid table. Only clears the grid of search
+ * related css classes.
+ *
+ * @param grid - The grid of nodes.
+ */
+function clearSearch(grid) {
+    grid.clearSearch();
+    for (let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
+        }
+    }
+    clearTimeout(timer);
 }
 
 
@@ -102,24 +163,37 @@ function clearGrid(grid) {
 /**
  * Runs the dijkstra algorithm and draws the output.
  *
- * @param grid
+ * @param grid - The grid of nodes.
  */
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
-    let path = getPath(grid);
+    let fullSearch = visited.concat(getPath(grid));
+    currentAlgorithm = "dijkstra";
 
-    draw(visited.concat(path), 5);
+    draw(fullSearch, delay);
 }
 
+/**
+ * Runs the A* search algorithm and draws the output.
+ *
+ * @param grid - The grid of nodes.
+ */
 function aStar(grid) {
+    let aStar = new AStar(grid.getStart(), grid.getEnd());
+    let visited = aStar.runAStar();
+    let fullSearch = visited.concat(getPath(grid));
+    currentAlgorithm = "aStar";
 
+    draw(fullSearch, delay)
 }
 
 /* =================================================== */
 
 /**
  * Draws the visited nodes then the path found.
+ *
+ * Re-enables the Clear Path button once path has been found.
  *
  * @param array - The array of nodes.
  * @param delay - The delay between each node being drawn
@@ -134,13 +208,20 @@ function draw(array, delay) {
 
         if (node.state !== "start" && node.state !== "end") {
             $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+        } else {
+            $(".grid-clear").removeAttr("disabled");
+            algorithmStarted = true;
         }
     });
+    $(".grid-clear").removeAttr("disabled");
 }
 
 /**
  * Draws the output of a path finding algorithm, with the
  * delay of each node being drawn being interval.
+ *
+ * Disables the Clear Grid button to ensure it is not clicked
+ * during the search.
  *
  * @param output - The output of the algorithm
  * @param interval - The time between drawing each node
@@ -153,7 +234,9 @@ function drawOutput(output, interval, callback) {
     function next() {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
-                setTimeout(next, interval);
+
+                $(".grid-clear").attr("disabled", "disabled");
+                timer = setTimeout(next, interval);
             }
         }
     }

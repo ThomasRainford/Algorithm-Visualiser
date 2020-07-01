@@ -9,22 +9,32 @@ import {AStar} from "./pathfinding/astar/aStarSearch.js";
  */
 let algorithmSelected = false;
 
+/**
+ * Keeps track of when an algorithm has been started.
+ *
+ * @type {boolean}
+ */
 let algorithmStarted = false;
 
 /**
- *
+ * The delay between node rendering.
  *
  * @type {number}
  */
 let delay = 5;
 
 /**
- *
+ * The current algorithm selected.
  *
  * @type {string}
  */
 let currentAlgorithm = "";
 
+/**
+ * The current timer.
+ *
+ * @type {number}
+ */
 let timer = undefined;
 
 
@@ -304,9 +314,9 @@ function selectNode(element, grid) {
  * ensuring the start/end node does not replace the other start/end
  * node.
  *
- * @param element
- * @param grid
- * @param selectedNode
+ * @param element - The css class.
+ * @param grid - The grid of nodes.
+ * @param selectedNode - Current node selected.
  * @returns {*}
  */
 function moveStartEndNode(element, grid, selectedNode) {
@@ -355,7 +365,7 @@ function moveStartEndNode(element, grid, selectedNode) {
  * to a start or end node.
  *
  * @param selectedNode - The node selected
- * @param grid
+ * @param grid - The grid of nodes.
  */
 function setStartEndNode(selectedNode, grid) {
     if (selectedNode.state === "start") {

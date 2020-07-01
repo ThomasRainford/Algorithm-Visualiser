@@ -59,8 +59,9 @@ $(document).ready(function () {
 });
 
 /**
- * Handles the movement of the start and end nodes.
- * Handles the drawing of inaccessible nodes.
+ * Handles the movement of the start and end nodes,
+ * the drawing of inaccessible nodes and the hover
+ * functionality.
  *
  * @param grid - The grid of nodes.
  */
@@ -86,7 +87,16 @@ function handleGridInput(grid) {
                 selectNode(this, grid);
             }
         }
+    }).hover(function () {
+        let node = getNode(this, grid);
+        if(node.state !== "start" && node.state !== "end" && node.state !== "inaccessible"){
+            $(this).css("background-color", "#c8c7c8");
+        }
+        console.log(node.state);
+    }, function () {
+        $(this).removeAttr("style");
     });
+    
     $(document).mouseup(function () {
         isMouseDown = false;
         //grid.logGrid();

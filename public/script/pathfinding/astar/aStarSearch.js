@@ -1,7 +1,5 @@
 import {Fringe} from "./fringe.js"
 
-let g = 0;
-let f = 0;
 
 export function AStar(start, end) {
     this.visited = [];
@@ -24,8 +22,8 @@ export function AStar(start, end) {
 
                 for (let neighbour of bestFringe.node.neighbours) {
                     if (!this.visited.includes(neighbour)) {
-                        g = bestFringe.g + neighbour.weight;
-                        fringes.push(new Fringe(neighbour, bestFringe.node, g, calcF(neighbour)));
+                        let g = bestFringe.g + neighbour.weight;
+                        fringes.push(new Fringe(neighbour, bestFringe.node, g, calcF(neighbour, g)));
                     }
                 }
             }
@@ -33,8 +31,8 @@ export function AStar(start, end) {
         return setVisited(this.visited);
     }
 
-    function calcF(node) {
-        f = g + calcHeuristic(node);
+    function calcF(node, g) {
+        return g + calcHeuristic(node);
     }
 
     function calcHeuristic(node) {
@@ -66,6 +64,7 @@ export function AStar(start, end) {
                 bestFringe = fringe;
             }
         }
+        console.log("lowest cost:" + lowestCost);
         fringes.splice(fringes.indexOf(bestFringe), 1);
         return bestFringe;
     }

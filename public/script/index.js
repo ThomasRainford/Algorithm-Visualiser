@@ -47,51 +47,16 @@ $(document).ready(function () {
     handleGridInput(grid);
 
     // Change the text of the alg-activate button to the selected dropdown menu item
-    $(".dropdown-menu button").click(function () {
-        let text = $(this).text();
-        $(".alg-activate").text("Run " + text);
-        algorithmSelected = true;
-    });
+    handleDropDown()
 
     // run the selected algorithm when the run button is clicked
     handleAlgActivate(grid);
 
     // clear the grid when button clicked.
-    $(".grid-clear").on("click", function () {
-        $(".alg-activate").text("Run Dijkstra").removeAttr("disabled"); //TODO: Add variable for text value.
-        clearGrid(grid);
-    });
+    handleGridClear(grid);
 
 
 });
-
-/**
- * Handle the button which activates the algorithm. After algorithm
- * has started executing, the button will then act as a play/pause
- * button.
- *
- * @param grid - The grid of nodes.
- */
-function handleAlgActivate(grid) {
-    $(".alg-activate").on("click", function () {
-        if (algorithmSelected) {
-            let text = $(this).text();
-            console.log(text);
-            // Handle algorithm running state.
-            if (text.includes("Run")) {
-                clearSearch(grid);
-                if (text === "Run Dijkstra") {
-                    dijkstra(grid);
-                } else if (text === "Run A* Search") {
-                    aStar(grid);
-                }
-
-            }
-        } else {
-            $(this).text("Select Algorithm");
-        }
-    });
-}
 
 /**
  * Handles the movement of the start and end nodes.
@@ -125,6 +90,57 @@ function handleGridInput(grid) {
     $(document).mouseup(function () {
         isMouseDown = false;
         //grid.logGrid();
+    });
+}
+
+/**
+ * Handles the drop down menu for selecting algorithm.
+ */
+function handleDropDown() {
+    $(".dropdown-menu button").click(function () {
+        let text = $(this).text();
+        $(".alg-activate").text("Run " + text);
+        algorithmSelected = true;
+    });
+}
+
+/**
+ * Handle the button which activates the algorithm. After algorithm
+ * has started executing, the button will then act as a play/pause
+ * button.
+ *
+ * @param grid - The grid of nodes.
+ */
+function handleAlgActivate(grid) {
+    $(".alg-activate").on("click", function () {
+        if (algorithmSelected) {
+            let text = $(this).text();
+            console.log(text);
+            // Handle algorithm running state.
+            if (text.includes("Run")) {
+                clearSearch(grid);
+                if (text === "Run Dijkstra") {
+                    dijkstra(grid);
+                } else if (text === "Run A* Search") {
+                    aStar(grid);
+                }
+
+            }
+        } else {
+            $(this).text("Select Algorithm");
+        }
+    });
+}
+
+/**
+ * Handles the grid clear button.
+ *
+ * @param grid - The grid of nodes.
+ */
+function handleGridClear(grid) {
+    $(".grid-clear").on("click", function () {
+        $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+        clearGrid(grid);
     });
 }
 
@@ -179,7 +195,7 @@ function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
     let fullSearch = visited.concat(getPath(grid));
-    currentAlgorithm = "dijkstra";
+    currentAlgorithm = "Dijkstra";
 
     draw(fullSearch, delay);
 }
@@ -193,7 +209,7 @@ function aStar(grid) {
     let aStar = new AStar(grid.getStart(), grid.getEnd());
     let visited = aStar.runAStar();
     let fullSearch = visited.concat(getPath(grid));
-    currentAlgorithm = "aStar";
+    currentAlgorithm = "A* Search";
 
     draw(fullSearch, delay)
 }

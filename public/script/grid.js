@@ -163,6 +163,20 @@ export function Grid(width, height) {
         }
     }
 
+    /**
+     * Clear the grid. Set all nodes except start, end and inaccessible nodes to unvisited.
+     */
+    this.clearSearch = function () {
+        for(let row = 0; row < this.height; row++) {
+            for (let col = 0; col < this.width; col++) {
+                let currentNode = this.gridArray[row][col];
+                if(currentNode.state !== "start" && currentNode.state !== "end" && currentNode.state !== "inaccessible") {
+                    currentNode.state = "unvisited";
+                }
+            }
+        }
+    }
+
     /* ----- Getters and Setters ----- */
 
     this.getStart = function () {

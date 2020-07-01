@@ -69,12 +69,13 @@ function handleAlgActivate(grid) {
             console.log(text);
             // Handle algorithm running state.
             if (text.includes("Run")) {
-                clearGrid(grid);
+                clearSearch(grid);
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
+
             }
         } else {
             $(this).text("Select Algorithm");
@@ -118,8 +119,9 @@ function handleGridInput(grid) {
 }
 
 /**
- * Iterates through grid and removes all classes which are not
- * start or end.
+ * Clears the node array and removes css classes from
+ * the grid table. Completely clears the grid except
+ * for the start and end nodes.
  *
  * @param grid - The grid of nodes.
  */
@@ -131,6 +133,25 @@ function clearGrid(grid) {
                 .removeClass("data-path")
                 .removeClass("data-visited")
                 .removeClass("data-selected");
+        }
+    }
+    clearTimeout(timer);
+}
+
+/**
+ * Clears the node array and removes css classes from
+ * the grid table. Only clears the grid of search
+ * related css classes.
+ *
+ * @param grid - The grid of nodes.
+ */
+function clearSearch(grid) {
+    grid.clearSearch();
+    for (let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
         }
     }
     clearTimeout(timer);

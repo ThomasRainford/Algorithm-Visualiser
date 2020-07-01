@@ -9,6 +9,8 @@ import {AStar} from "./pathfinding/astar/aStarSearch.js";
  */
 let algorithmSelected = false;
 
+let algorithmStarted = false;
+
 /**
  *
  *
@@ -22,6 +24,8 @@ let delay = 5;
  * @type {string}
  */
 let currentAlgorithm = "";
+
+let timer = undefined;
 
 
 $(document).ready(function () {
@@ -65,6 +69,7 @@ function handleAlgActivate(grid) {
             console.log(text);
             // Handle algorithm running state.
             if (text.includes("Run")) {
+                clearGrid(grid);
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
@@ -128,6 +133,7 @@ function clearGrid(grid) {
                 .removeClass("data-selected");
         }
     }
+    clearTimeout(timer);
 }
 
 
@@ -183,6 +189,7 @@ function draw(array, delay) {
             $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
         } else {
             $(".grid-clear").removeAttr("disabled");
+            algorithmStarted = true;
         }
     });
     $(".grid-clear").removeAttr("disabled");
@@ -208,7 +215,7 @@ function drawOutput(output, interval, callback) {
             if (++i < output.length) {
 
                 $(".grid-clear").attr("disabled", "disabled");
-                setTimeout(next, interval);
+                timer = setTimeout(next, interval);
             }
         }
     }

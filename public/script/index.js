@@ -198,6 +198,12 @@ function clearSearch(grid) {
     clearTimeout(timer);
 }
 
+/**
+ * Draw the path of the current algorithm using a different css class
+ * to show, when the next algorithm is run, where this algorithm's path was.
+ *
+ * @param grid - The grid of node.
+ */
 function drawPreviousPath(grid) {
     let path = getPath(grid);
     for(let i = 0; i < path.length; i++) {
@@ -350,7 +356,10 @@ function selectNode(element, grid) {
             node.state = "unvisited";
 
         } else {
-            $(element).addClass("data-selected");
+            let node = getNode(element, grid);
+            if(node.state === "unvisited") {
+                $(element).addClass("data-selected");
+            }
             node.state = "inaccessible";
         }
     }

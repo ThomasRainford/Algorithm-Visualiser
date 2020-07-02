@@ -17,11 +17,21 @@ let algorithmSelected = false;
 let algorithmStarted = false;
 
 /**
+ * Keeps track of when a new path is creates. This ensures
+ * that when more nodes are selected or the grid is cleared,
+ * the current previous path can be removed as it is no
+ * longer relevant.
+ *
+ * @type {boolean}
+ */
+let newPath = false;
+
+/**
  * The delay between node rendering.
  *
  * @type {number}
  */
-let delay = 5;
+let delay = 20;
 
 /**
  * The current algorithm selected.
@@ -54,8 +64,6 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     handleGridClear(grid);
-
-
 });
 
 /**
@@ -96,7 +104,7 @@ function handleGridInput(grid) {
     }, function () {
         $(this).removeAttr("style");
     });
-    
+
     $(document).mouseup(function () {
         isMouseDown = false;
         //grid.logGrid();
@@ -129,12 +137,13 @@ function handleAlgActivate(grid) {
             // Handle algorithm running state.
             if (text.includes("Run")) {
                 clearSearch(grid);
+                drawPreviousPath(grid);
+                //TODO: add function to add previous path.
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
-
             }
         } else {
             $(this).text("Select Algorithm");
@@ -154,44 +163,7 @@ function handleGridClear(grid) {
     });
 }
 
-/**
- * Clears the node array and removes css classes from
- * the grid table. Completely clears the grid except
- * for the start and end nodes.
- *
- * @param grid - The grid of nodes.
- */
-function clearGrid(grid) {
-    grid.clearGrid();
-    for (let row = 0; row < grid.height; row++) {
-        for (let col = 0; col < grid.width; col++) {
-            $(`.table tr.row td.${row}-${col}`)
-                .removeClass("data-path")
-                .removeClass("data-visited")
-                .removeClass("data-selected");
-        }
-    }
-    clearTimeout(timer);
-}
 
-/**
- * Clears the node array and removes css classes from
- * the grid table. Only clears the grid of search
- * related css classes.
- *
- * @param grid - The grid of nodes.
- */
-function clearSearch(grid) {
-    grid.clearSearch();
-    for (let row = 0; row < grid.height; row++) {
-        for (let col = 0; col < grid.width; col++) {
-            $(`.table tr.row td.${row}-${col}`)
-                .removeClass("data-path")
-                .removeClass("data-visited")
-        }
-    }
-    clearTimeout(timer);
-}
 
 
 /* Functions which handle the path finding algorithms */
@@ -227,6 +199,100 @@ function aStar(grid) {
 /* =================================================== */
 
 /**
+ * Clears the node array and removes css classes from
+ * the grid table. Completely clears the grid except
+ * for the start and end nodes.
+ *
+ * @param grid - The grid of nodes.
+ */
+function clearGrid(grid) {
+    grid.clearGrid();
+    for (let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
+                .removeClass("data-selected")
+                .removeClass("data-prev-path");
+        }
+    }
+    clearTimeout(timer);
+    newPath = true;
+}
+
+/**
+ * Clears the node array and removes css classes from
+ * the grid table. Only clears the grid of search
+ * related css classes.
+ *
+ * @param grid - The grid of nodes.
+ */
+function clearSearch(grid) {
+    grid.clearSearch();
+    for (let row = 0; row < grid.height; row++) {
+        for (let col = 0; col < grid.width; col++) {
+            $(`.table tr.row td.${row}-${col}`)
+                .removeClass("data-path")
+                .removeClass("data-visited")
+                .removeClass("data-prev-path");
+        }
+    }
+    clearTimeout(timer);
+}
+
+/**
+ * Draw the path of the current algorithm using a different css class
+ * to show, when the next algorithm is run, where this algorithm's path was.
+ *
+ * @param grid - The grid of node.
+ */
+function drawPreviousPath(grid) {
+    if(!newPath) {
+        let path = getPath(grid);
+        for (let i = 0; i < path.length; i++) {
+            let node = path[i];
+            if (node.state !== "start" && node.state !== "end") {
+                $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-prev-path");
+            }
+        }
+    }
+    newPath = false;
+}
+
+/**
+ * Creates an array which contains the nodes which are
+ * part of the path found.
+ *
+ * @param grid
+ * @returns {*[]} - Array of nodes in the path
+ */
+function getPath(grid) {
+    let path = [];
+    for (let node = grid.getEnd(); node != null; node = node.previous) {
+        path.push(node);
+    }
+    return path.reverse();
+}
+
+/**
+ * If the path has started return the name of the css class used
+ * for displaying the path, otherwise return the name of the
+ * css class which displays the search.
+ *
+ * @param startPath - If the path has started or not.
+ * @returns {string} - Name of the css class.
+ */
+function setCssClass(startPath) {
+    if (startPath) {
+        return "data-path";
+    } else {
+        return "data-visited";
+    }
+}
+
+/* Function which handle the Grid UI */
+
+/**
  * Draws the visited nodes then the path found.
  *
  * Re-enables the Clear Path button once path has been found.
@@ -243,7 +309,13 @@ function draw(array, delay) {
         let cssClass = setCssClass(startPath);
 
         if (node.state !== "start" && node.state !== "end") {
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+            if(startPath) {
+                $(`.table tr.row td.${node.row}-${node.col}`)
+                    .addClass(cssClass)
+                    .removeClass("data-visited");
+            } else {
+                $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+            }
         } else {
             $(".grid-clear").removeAttr("disabled");
             algorithmStarted = true;
@@ -279,40 +351,6 @@ function drawOutput(output, interval, callback) {
 }
 
 /**
- * Creates an array which contains the nodes which are
- * part of the path found.
- *
- * @param grid
- * @returns {*[]} - Array of nodes in the path
- */
-function getPath(grid) {
-    let path = [];
-    for (let node = grid.getEnd(); node != null; node = node.previous) {
-        path.push(node);
-    }
-    return path.reverse();
-}
-
-/**
- * If the path has started return the name of the css class used
- * for displaying the path, otherwise return the name of the
- * css class which displays the search.
- *
- * @param startPath - If the path has started or not.
- * @returns {string} - Name of the css class.
- */
-function setCssClass(startPath) {
-    if (startPath) {
-        return "data-path";
-    } else {
-        return "data-visited";
-    }
-}
-
-
-/* Function which handle the Grid UI */
-
-/**
  * Checks if the node to be selected is already selected.
  * If it is then it will unselect it and sets it's status to unvisited.
  * Otherwise it will select it and set it's status to inaccessible.
@@ -329,7 +367,11 @@ function selectNode(element, grid) {
             node.state = "unvisited";
 
         } else {
-            $(element).addClass("data-selected");
+            let node = getNode(element, grid);
+            if(node.state === "unvisited") {
+                $(element).addClass("data-selected");
+                newPath = true;
+            }
             node.state = "inaccessible";
         }
     }
@@ -386,6 +428,8 @@ function moveStartEndNode(element, grid, selectedNode) {
     }
 }
 
+/* ======================================= */
+
 /**
  * When the start or end node is moved then set the selected node
  * to a start or end node.
@@ -401,7 +445,6 @@ function setStartEndNode(selectedNode, grid) {
         grid.setEnd(selectedNode);
     }
 }
-
 
 /**
  *  Gets a node from the grid.

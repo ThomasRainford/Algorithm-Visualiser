@@ -103,7 +103,6 @@ function handleGridInput(grid) {
         if(node.state !== "start" && node.state !== "end" && node.state !== "inaccessible"){
             $(this).css("background-color", "#c8c7c8");
         }
-        console.log(node.state);
     }, function () {
         $(this).removeAttr("style");
     });
@@ -136,12 +135,10 @@ function handleAlgActivate(grid) {
     $(".alg-activate").on("click", function () {
         if (algorithmSelected) {
             let text = $(this).text();
-            console.log(text);
             // Handle algorithm running state.
             if (text.includes("Run")) {
                 clearSearch(grid);
                 drawPreviousPath(grid);
-                //TODO: add function to add previous path.
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
@@ -171,8 +168,6 @@ function handleSearchClear(grid) {
         clearSearch(grid);
     })
 }
-
-
 
 
 /* Functions which handle the path finding algorithms */
@@ -280,6 +275,11 @@ function getPath(grid) {
     for (let node = grid.getEnd(); node != null; node = node.previous) {
         path.push(node);
     }
+
+    path.forEach(function (item) {
+        item.previous = undefined;
+    });
+
     return path.reverse();
 }
 

@@ -100,7 +100,7 @@ function handleGridInput(grid) {
         }
     }).hover(function () {
         let node = getNode(this, grid);
-        if(node.state !== "start" && node.state !== "end" && node.state !== "inaccessible"){
+        if (node.state !== "start" && node.state !== "end" && node.state !== "inaccessible") {
             $(this).css("background-color", "#c8c7c8");
         }
     }, function () {
@@ -158,13 +158,18 @@ function handleAlgActivate(grid) {
  */
 function handleGridClear(grid) {
     $(".grid-clear").on("click", function () {
-        $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+        if (algorithmSelected) {
+            $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+        }
         clearGrid(grid);
     });
 }
 
 function handleSearchClear(grid) {
     $(".search-clear").on("click", function () {
+        if (algorithmSelected) {
+            $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+        }
         clearSearch(grid);
     })
 }
@@ -251,7 +256,7 @@ function clearSearch(grid) {
  * @param grid - The grid of node.
  */
 function drawPreviousPath(grid) {
-    if(!newPath) {
+    if (!newPath) {
         let path = getPath(grid);
         for (let i = 0; i < path.length; i++) {
             let node = path[i];
@@ -318,7 +323,7 @@ function draw(array, delay) {
         let cssClass = setCssClass(startPath);
 
         if (node.state !== "start" && node.state !== "end") {
-            if(startPath) {
+            if (startPath) {
                 $(`.table tr.row td.${node.row}-${node.col}`)
                     .addClass(cssClass)
                     .removeClass("data-visited");
@@ -380,7 +385,7 @@ function selectNode(element, grid) {
 
         } else {
             let node = getNode(element, grid);
-            if(node.state === "unvisited") {
+            if (node.state === "unvisited") {
                 $(element).addClass("data-selected");
                 newPath = true;
             }

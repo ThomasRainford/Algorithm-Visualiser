@@ -96,7 +96,7 @@ function handleGridInput(grid) {
     }, function () {
         $(this).removeAttr("style");
     });
-    
+
     $(document).mouseup(function () {
         isMouseDown = false;
         //grid.logGrid();
@@ -129,6 +129,8 @@ function handleAlgActivate(grid) {
             // Handle algorithm running state.
             if (text.includes("Run")) {
                 clearSearch(grid);
+                drawPreviousPath(grid);
+                //TODO: add function to add previous path.
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
@@ -168,7 +170,8 @@ function clearGrid(grid) {
             $(`.table tr.row td.${row}-${col}`)
                 .removeClass("data-path")
                 .removeClass("data-visited")
-                .removeClass("data-selected");
+                .removeClass("data-selected")
+                .removeClass("data-prev-path");
         }
     }
     clearTimeout(timer);
@@ -188,9 +191,17 @@ function clearSearch(grid) {
             $(`.table tr.row td.${row}-${col}`)
                 .removeClass("data-path")
                 .removeClass("data-visited")
+                .removeClass("data-prev-path");
         }
     }
     clearTimeout(timer);
+}
+
+function drawPreviousPath(grid) {
+    let path = getPath(grid);
+    for(let i = 0; i < path.length; i++) {
+        $(`.table tr.row td.${path[i].row}-${path[i].col}`).addClass("data-prev-path");
+    }
 }
 
 

@@ -41,6 +41,14 @@ let delay = 20;
 let currentAlgorithm = "";
 
 /**
+ * Stores the current path to ensure node previous attributes
+ * can be safely removed.
+ *
+ * @type {*[]}
+ */
+let currentPath = [];
+
+/**
  * The current timer.
  *
  * @type {number}
@@ -144,6 +152,11 @@ function handleAlgActivate(grid) {
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
+
+                currentPath.forEach(function (item) {
+                    item.previous = undefined;
+                });
+
             }
         } else {
             $(this).text("Select Algorithm");
@@ -165,6 +178,11 @@ function handleGridClear(grid) {
     });
 }
 
+/**
+ * Handles the search clear button.
+ *
+ * @param grid - The grid of nodes.
+ */
 function handleSearchClear(grid) {
     $(".search-clear").on("click", function () {
         if (algorithmSelected) {
@@ -185,10 +203,13 @@ function handleSearchClear(grid) {
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
-    let fullSearch = visited.concat(getPath(grid));
+    let path = getPath(grid);
+    let fullSearch = visited.concat(path);
     currentAlgorithm = "Dijkstra";
 
     draw(fullSearch, delay);
+
+    currentPath = path;
 }
 
 /**
@@ -199,10 +220,13 @@ function dijkstra(grid) {
 function aStar(grid) {
     let aStar = new AStar(grid.getStart(), grid.getEnd());
     let visited = aStar.runAStar();
-    let fullSearch = visited.concat(getPath(grid));
+    let path = getPath(grid);
+    let fullSearch = visited.concat(path);
     currentAlgorithm = "A* Search";
 
     draw(fullSearch, delay)
+
+    currentPath = path;
 }
 
 /* =================================================== */
@@ -257,7 +281,7 @@ function clearSearch(grid) {
  */
 function drawPreviousPath(grid) {
     if (!newPath) {
-        let path = getPath(grid);
+        let path = currentPath;
         for (let i = 0; i < path.length; i++) {
             let node = path[i];
             if (node.state !== "start" && node.state !== "end") {
@@ -280,11 +304,6 @@ function getPath(grid) {
     for (let node = grid.getEnd(); node != null; node = node.previous) {
         path.push(node);
     }
-
-    path.forEach(function (item) {
-        item.previous = undefined;
-    });
-
     return path.reverse();
 }
 

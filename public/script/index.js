@@ -137,6 +137,7 @@ function handleAlgActivate(grid) {
                     aStar(grid);
                 }
 
+
             }
         } else {
             $(this).text("Select Algorithm");

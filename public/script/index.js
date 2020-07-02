@@ -64,6 +64,9 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     handleGridClear(grid);
+
+    // clear the search when button clicked.
+    handleSearchClear(grid);
 });
 
 /**
@@ -161,6 +164,12 @@ function handleGridClear(grid) {
         $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
         clearGrid(grid);
     });
+}
+
+function handleSearchClear(grid) {
+    $(".search-clear").on("click", function () {
+        clearSearch(grid);
+    })
 }
 
 
@@ -318,10 +327,12 @@ function draw(array, delay) {
             }
         } else {
             $(".grid-clear").removeAttr("disabled");
+            $(".search-clear").removeAttr("disabled");
             algorithmStarted = true;
         }
     });
     $(".grid-clear").removeAttr("disabled");
+    $(".search-clear").removeAttr("disabled");
 }
 
 /**
@@ -344,6 +355,7 @@ function drawOutput(output, interval, callback) {
             if (++i < output.length) {
 
                 $(".grid-clear").attr("disabled", "disabled");
+                $(".search-clear").attr("disabled", "disabled");
                 timer = setTimeout(next, interval);
             }
         }

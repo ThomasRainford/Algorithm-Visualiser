@@ -78,9 +78,19 @@ h1 {
     width: 30%;
 }
 
+.grid-nav {
+
+}
+
 /* Nav buttons */
 .grid-clear {
+    margin-right: 2%;
+}
 
+.search-clear {
+    display: block;
+    margin-left: 2%;
+    margin-right: auto;
 }
 
 

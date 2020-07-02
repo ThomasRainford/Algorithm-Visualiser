@@ -16,6 +16,8 @@ let algorithmSelected = false;
  */
 let algorithmStarted = false;
 
+let newPath = false;
+
 /**
  * The delay between node rendering.
  *
@@ -176,6 +178,7 @@ function clearGrid(grid) {
         }
     }
     clearTimeout(timer);
+    newPath = true;
 }
 
 /**
@@ -205,13 +208,16 @@ function clearSearch(grid) {
  * @param grid - The grid of node.
  */
 function drawPreviousPath(grid) {
-    let path = getPath(grid);
-    for(let i = 0; i < path.length; i++) {
-        let node = path[i];
-        if (node.state !== "start" && node.state !== "end") {
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-prev-path");
+    if(!newPath) {
+        let path = getPath(grid);
+        for (let i = 0; i < path.length; i++) {
+            let node = path[i];
+            if (node.state !== "start" && node.state !== "end") {
+                $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-prev-path");
+            }
         }
     }
+    newPath = false;
 }
 
 
@@ -359,6 +365,7 @@ function selectNode(element, grid) {
             let node = getNode(element, grid);
             if(node.state === "unvisited") {
                 $(element).addClass("data-selected");
+                newPath = true;
             }
             node.state = "inaccessible";
         }
@@ -431,7 +438,6 @@ function setStartEndNode(selectedNode, grid) {
         grid.setEnd(selectedNode);
     }
 }
-
 
 /**
  *  Gets a node from the grid.

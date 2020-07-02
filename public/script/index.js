@@ -200,7 +200,10 @@ function clearSearch(grid) {
 function drawPreviousPath(grid) {
     let path = getPath(grid);
     for(let i = 0; i < path.length; i++) {
-        $(`.table tr.row td.${path[i].row}-${path[i].col}`).addClass("data-prev-path");
+        let node = path[i];
+        if (node.state !== "start" && node.state !== "end") {
+            $(`.table tr.row td.${node.row}-${node.col}`).addClass("data-prev-path");
+        }
     }
 }
 
@@ -254,7 +257,13 @@ function draw(array, delay) {
         let cssClass = setCssClass(startPath);
 
         if (node.state !== "start" && node.state !== "end") {
-            $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+            if(startPath) {
+                $(`.table tr.row td.${node.row}-${node.col}`)
+                    .addClass(cssClass)
+                    .removeClass("data-visited");
+            } else {
+                $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+            }
         } else {
             $(".grid-clear").removeAttr("disabled");
             algorithmStarted = true;

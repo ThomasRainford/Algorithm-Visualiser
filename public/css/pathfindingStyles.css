@@ -58,6 +58,11 @@ h1 {
     color: white;
 }
 
+.data-prev-path {
+    background-color: #bec75a;
+    color: white;
+}
+
 /**
     Navbar styles
  */

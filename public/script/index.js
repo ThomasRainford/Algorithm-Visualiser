@@ -16,6 +16,14 @@ let algorithmSelected = false;
  */
 let algorithmStarted = false;
 
+/**
+ * Keeps track of when a new path is creates. This ensures
+ * that when more nodes are selected or the grid is cleared,
+ * the current previous path can be removed as it is no
+ * longer relevant.
+ *
+ * @type {boolean}
+ */
 let newPath = false;
 
 /**
@@ -23,7 +31,7 @@ let newPath = false;
  *
  * @type {number}
  */
-let delay = 5;
+let delay = 20;
 
 /**
  * The current algorithm selected.
@@ -56,8 +64,6 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     handleGridClear(grid);
-
-
 });
 
 /**
@@ -138,8 +144,6 @@ function handleAlgActivate(grid) {
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
-
-
             }
         } else {
             $(this).text("Select Algorithm");
@@ -158,6 +162,41 @@ function handleGridClear(grid) {
         clearGrid(grid);
     });
 }
+
+
+
+
+/* Functions which handle the path finding algorithms */
+
+/**
+ * Runs the dijkstra algorithm and draws the output.
+ *
+ * @param grid - The grid of nodes.
+ */
+function dijkstra(grid) {
+    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
+    let visited = dijkstra.runDijkstra();
+    let fullSearch = visited.concat(getPath(grid));
+    currentAlgorithm = "Dijkstra";
+
+    draw(fullSearch, delay);
+}
+
+/**
+ * Runs the A* search algorithm and draws the output.
+ *
+ * @param grid - The grid of nodes.
+ */
+function aStar(grid) {
+    let aStar = new AStar(grid.getStart(), grid.getEnd());
+    let visited = aStar.runAStar();
+    let fullSearch = visited.concat(getPath(grid));
+    currentAlgorithm = "A* Search";
+
+    draw(fullSearch, delay)
+}
+
+/* =================================================== */
 
 /**
  * Clears the node array and removes css classes from
@@ -220,38 +259,38 @@ function drawPreviousPath(grid) {
     newPath = false;
 }
 
-
-/* Functions which handle the path finding algorithms */
-
 /**
- * Runs the dijkstra algorithm and draws the output.
+ * Creates an array which contains the nodes which are
+ * part of the path found.
  *
- * @param grid - The grid of nodes.
+ * @param grid
+ * @returns {*[]} - Array of nodes in the path
  */
-function dijkstra(grid) {
-    let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
-    let visited = dijkstra.runDijkstra();
-    let fullSearch = visited.concat(getPath(grid));
-    currentAlgorithm = "Dijkstra";
-
-    draw(fullSearch, delay);
+function getPath(grid) {
+    let path = [];
+    for (let node = grid.getEnd(); node != null; node = node.previous) {
+        path.push(node);
+    }
+    return path.reverse();
 }
 
 /**
- * Runs the A* search algorithm and draws the output.
+ * If the path has started return the name of the css class used
+ * for displaying the path, otherwise return the name of the
+ * css class which displays the search.
  *
- * @param grid - The grid of nodes.
+ * @param startPath - If the path has started or not.
+ * @returns {string} - Name of the css class.
  */
-function aStar(grid) {
-    let aStar = new AStar(grid.getStart(), grid.getEnd());
-    let visited = aStar.runAStar();
-    let fullSearch = visited.concat(getPath(grid));
-    currentAlgorithm = "A* Search";
-
-    draw(fullSearch, delay)
+function setCssClass(startPath) {
+    if (startPath) {
+        return "data-path";
+    } else {
+        return "data-visited";
+    }
 }
 
-/* =================================================== */
+/* Function which handle the Grid UI */
 
 /**
  * Draws the visited nodes then the path found.
@@ -310,40 +349,6 @@ function drawOutput(output, interval, callback) {
         }
     }
 }
-
-/**
- * Creates an array which contains the nodes which are
- * part of the path found.
- *
- * @param grid
- * @returns {*[]} - Array of nodes in the path
- */
-function getPath(grid) {
-    let path = [];
-    for (let node = grid.getEnd(); node != null; node = node.previous) {
-        path.push(node);
-    }
-    return path.reverse();
-}
-
-/**
- * If the path has started return the name of the css class used
- * for displaying the path, otherwise return the name of the
- * css class which displays the search.
- *
- * @param startPath - If the path has started or not.
- * @returns {string} - Name of the css class.
- */
-function setCssClass(startPath) {
-    if (startPath) {
-        return "data-path";
-    } else {
-        return "data-visited";
-    }
-}
-
-
-/* Function which handle the Grid UI */
 
 /**
  * Checks if the node to be selected is already selected.
@@ -422,6 +427,8 @@ function moveStartEndNode(element, grid, selectedNode) {
         return selectedNode;
     }
 }
+
+/* ======================================= */
 
 /**
  * When the start or end node is moved then set the selected node

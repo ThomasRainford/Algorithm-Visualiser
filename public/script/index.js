@@ -31,7 +31,7 @@ let newPath = false;
  *
  * @type {number}
  */
-let delay = 20;
+let delay = 50;
 
 /**
  * The current algorithm selected.
@@ -122,7 +122,8 @@ function handleGridInput(grid) {
 }
 
 /**
- * Handles the drop down menu for selecting algorithm.
+ * Handles the drop down menus for selecting the algorithm
+ * and selecting the delay.
  */
 function handleDropDown() {
     $(".algorithm-menu button").click(function () {
@@ -130,6 +131,18 @@ function handleDropDown() {
         $(".run-alg").text("Run " + text);
         algorithmSelected = true;
     });
+
+    $(".speed-menu button").click(function () {
+        let text = $(this).text();
+        $(".speed").text("Speed: " + text);
+        if (text === "Slow") {
+            delay = 50;
+        } else if (text === "Moderate") {
+            delay = 20;
+        } else {
+            delay = 5;
+        }
+    })
 }
 
 /**
@@ -153,10 +166,11 @@ function handleAlgActivate(grid) {
                     aStar(grid);
                 }
 
+                // Set previous field to undefined so old previous path is removed
+                // and the new one can be draw.
                 currentPath.forEach(function (item) {
                     item.previous = undefined;
                 });
-
             }
         } else {
             $(this).text("Select Algorithm");

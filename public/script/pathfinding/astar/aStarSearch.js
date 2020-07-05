@@ -64,7 +64,6 @@ export function AStar(start, end) {
                 bestFringe = fringe;
             }
         }
-        console.log("lowest cost:" + lowestCost);
         fringes.splice(fringes.indexOf(bestFringe), 1);
         return bestFringe;
     }

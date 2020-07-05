@@ -31,34 +31,61 @@
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="main-nav container">
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <div class="algorithm-container">
                             <div class="dropdown">
                                 <button class="algorithm btn btn-secondary dropdown-toggle" type="button"
-                                        id="dropdownMenuButton"
+                                        id="algorithmDropdownMenuButton"
                                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Algorithms
                                 </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <div class="algorithm-menu dropdown-menu" aria-labelledby="algorithmDropdownMenuButton">
                                     <button class="dropdown-item">Dijkstra</button>
                                     <button class="dropdown-item">A* Search</button>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="speed-container">
+                            <div class="dropdown">
+                                <button class="speed btn btn-secondary dropdown-toggle" type="button"
+                                        id="speedDropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Speed
+                                </button>
+                                <div class="speed-menu dropdown-menu" aria-labelledby="speedDropdownMenuButton">
+                                    <button class="dropdown-item">Slow</button>
+                                    <button class="dropdown-item">Moderate</button>
+                                    <button class="dropdown-item">Fast</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="run-alg-container">
+                            <button class="run-alg btn btn-lg btn-dark">Run Algorithm</button>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="grid-clear-container">
+                            <button class="grid-clear btn btn-md btn-danger">Clear Grid</button>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="search-clear-container">
+                            <button class="search-clear btn btn-md btn-danger">Clear Search</button>
+                        </div>
+                    </li>
+                </ul>
             </div>
-            <div class="search-nav container">
-                <button class="alg-activate btn btn-lg btn-dark">Run Algorithm</button>
-            </div>
-            <div class="grid-nav container">
-                <button class="grid-clear btn btn-md btn-danger">Clear Grid</button>
-            </div>
+
+
         </nav>
 
 

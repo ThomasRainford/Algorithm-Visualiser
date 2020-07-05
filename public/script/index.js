@@ -41,6 +41,14 @@ let delay = 20;
 let currentAlgorithm = "";
 
 /**
+ * Stores the current path to ensure node previous attributes
+ * can be safely removed.
+ *
+ * @type {*[]}
+ */
+let currentPath = [];
+
+/**
  * The current timer.
  *
  * @type {number}
@@ -64,6 +72,9 @@ $(document).ready(function () {
 
     // clear the grid when button clicked.
     handleGridClear(grid);
+
+    // clear the search when button clicked.
+    handleSearchClear(grid);
 });
 
 /**
@@ -97,10 +108,9 @@ function handleGridInput(grid) {
         }
     }).hover(function () {
         let node = getNode(this, grid);
-        if(node.state !== "start" && node.state !== "end" && node.state !== "inaccessible"){
+        if (node.state !== "start" && node.state !== "end" && node.state !== "inaccessible") {
             $(this).css("background-color", "#c8c7c8");
         }
-        console.log(node.state);
     }, function () {
         $(this).removeAttr("style");
     });
@@ -115,9 +125,9 @@ function handleGridInput(grid) {
  * Handles the drop down menu for selecting algorithm.
  */
 function handleDropDown() {
-    $(".dropdown-menu button").click(function () {
+    $(".algorithm-menu button").click(function () {
         let text = $(this).text();
-        $(".alg-activate").text("Run " + text);
+        $(".run-alg").text("Run " + text);
         algorithmSelected = true;
     });
 }
@@ -130,20 +140,23 @@ function handleDropDown() {
  * @param grid - The grid of nodes.
  */
 function handleAlgActivate(grid) {
-    $(".alg-activate").on("click", function () {
+    $(".run-alg").on("click", function () {
         if (algorithmSelected) {
             let text = $(this).text();
-            console.log(text);
             // Handle algorithm running state.
             if (text.includes("Run")) {
                 clearSearch(grid);
                 drawPreviousPath(grid);
-                //TODO: add function to add previous path.
                 if (text === "Run Dijkstra") {
                     dijkstra(grid);
                 } else if (text === "Run A* Search") {
                     aStar(grid);
                 }
+
+                currentPath.forEach(function (item) {
+                    item.previous = undefined;
+                });
+
             }
         } else {
             $(this).text("Select Algorithm");
@@ -158,12 +171,26 @@ function handleAlgActivate(grid) {
  */
 function handleGridClear(grid) {
     $(".grid-clear").on("click", function () {
-        $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+        if (algorithmSelected) {
+            $(".run-alg").text("Run " + currentAlgorithm).removeAttr("disabled");
+        }
         clearGrid(grid);
     });
 }
 
-
+/**
+ * Handles the search clear button.
+ *
+ * @param grid - The grid of nodes.
+ */
+function handleSearchClear(grid) {
+    $(".search-clear").on("click", function () {
+        if (algorithmSelected) {
+            $(".run-alg").text("Run " + currentAlgorithm).removeAttr("disabled");
+        }
+        clearSearch(grid);
+    })
+}
 
 
 /* Functions which handle the path finding algorithms */
@@ -176,10 +203,13 @@ function handleGridClear(grid) {
 function dijkstra(grid) {
     let dijkstra = new Dijkstra(grid.getStart(), grid.getEnd());
     let visited = dijkstra.runDijkstra();
-    let fullSearch = visited.concat(getPath(grid));
+    let path = getPath(grid);
+    let fullSearch = visited.concat(path);
     currentAlgorithm = "Dijkstra";
 
     draw(fullSearch, delay);
+
+    currentPath = path;
 }
 
 /**
@@ -190,10 +220,13 @@ function dijkstra(grid) {
 function aStar(grid) {
     let aStar = new AStar(grid.getStart(), grid.getEnd());
     let visited = aStar.runAStar();
-    let fullSearch = visited.concat(getPath(grid));
+    let path = getPath(grid);
+    let fullSearch = visited.concat(path);
     currentAlgorithm = "A* Search";
 
     draw(fullSearch, delay)
+
+    currentPath = path;
 }
 
 /* =================================================== */
@@ -247,8 +280,8 @@ function clearSearch(grid) {
  * @param grid - The grid of node.
  */
 function drawPreviousPath(grid) {
-    if(!newPath) {
-        let path = getPath(grid);
+    if (!newPath) {
+        let path = currentPath;
         for (let i = 0; i < path.length; i++) {
             let node = path[i];
             if (node.state !== "start" && node.state !== "end") {
@@ -309,7 +342,7 @@ function draw(array, delay) {
         let cssClass = setCssClass(startPath);
 
         if (node.state !== "start" && node.state !== "end") {
-            if(startPath) {
+            if (startPath) {
                 $(`.table tr.row td.${node.row}-${node.col}`)
                     .addClass(cssClass)
                     .removeClass("data-visited");
@@ -318,10 +351,12 @@ function draw(array, delay) {
             }
         } else {
             $(".grid-clear").removeAttr("disabled");
+            $(".search-clear").removeAttr("disabled");
             algorithmStarted = true;
         }
     });
     $(".grid-clear").removeAttr("disabled");
+    $(".search-clear").removeAttr("disabled");
 }
 
 /**
@@ -344,6 +379,7 @@ function drawOutput(output, interval, callback) {
             if (++i < output.length) {
 
                 $(".grid-clear").attr("disabled", "disabled");
+                $(".search-clear").attr("disabled", "disabled");
                 timer = setTimeout(next, interval);
             }
         }
@@ -368,7 +404,7 @@ function selectNode(element, grid) {
 
         } else {
             let node = getNode(element, grid);
-            if(node.state === "unvisited") {
+            if (node.state === "unvisited") {
                 $(element).addClass("data-selected");
                 newPath = true;
             }

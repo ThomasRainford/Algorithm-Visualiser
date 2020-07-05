@@ -122,7 +122,8 @@ function handleGridInput(grid) {
 }
 
 /**
- * Handles the drop down menu for selecting algorithm.
+ * Handles the drop down menus for selecting the algorithm
+ * and selecting the delay.
  */
 function handleDropDown() {
     $(".algorithm-menu button").click(function () {
@@ -130,6 +131,18 @@ function handleDropDown() {
         $(".run-alg").text("Run " + text);
         algorithmSelected = true;
     });
+
+    $(".speed-menu button").click(function () {
+        let text = $(this).text();
+        $(".speed").text("Speed: " + text);
+        if(text === "Slow") {
+            delay = 20;
+        } else if(text === "Moderate") {
+            delay = 10;
+        } else {
+            delay = 5;
+        }
+    })
 }
 
 /**

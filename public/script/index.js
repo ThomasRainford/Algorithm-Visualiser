@@ -127,7 +127,7 @@ function handleGridInput(grid) {
 function handleDropDown() {
     $(".dropdown-menu button").click(function () {
         let text = $(this).text();
-        $(".alg-activate").text("Run " + text);
+        $(".run-alg").text("Run " + text);
         algorithmSelected = true;
     });
 }
@@ -140,7 +140,7 @@ function handleDropDown() {
  * @param grid - The grid of nodes.
  */
 function handleAlgActivate(grid) {
-    $(".alg-activate").on("click", function () {
+    $(".run-alg").on("click", function () {
         if (algorithmSelected) {
             let text = $(this).text();
             // Handle algorithm running state.
@@ -170,9 +170,9 @@ function handleAlgActivate(grid) {
  * @param grid - The grid of nodes.
  */
 function handleGridClear(grid) {
-    $(".grid-clear-container").on("click", function () {
+    $(".grid-clear").on("click", function () {
         if (algorithmSelected) {
-            $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+            $(".run-alg").text("Run " + currentAlgorithm).removeAttr("disabled");
         }
         clearGrid(grid);
     });
@@ -186,7 +186,7 @@ function handleGridClear(grid) {
 function handleSearchClear(grid) {
     $(".search-clear").on("click", function () {
         if (algorithmSelected) {
-            $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
+            $(".run-alg").text("Run " + currentAlgorithm).removeAttr("disabled");
         }
         clearSearch(grid);
     })
@@ -350,12 +350,12 @@ function draw(array, delay) {
                 $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
             }
         } else {
-            $(".grid-clear-container").removeAttr("disabled");
+            $(".grid-clear").removeAttr("disabled");
             $(".search-clear").removeAttr("disabled");
             algorithmStarted = true;
         }
     });
-    $(".grid-clear-container").removeAttr("disabled");
+    $(".grid-clear").removeAttr("disabled");
     $(".search-clear").removeAttr("disabled");
 }
 
@@ -378,7 +378,7 @@ function drawOutput(output, interval, callback) {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
 
-                $(".grid-clear-container").attr("disabled", "disabled");
+                $(".grid-clear").attr("disabled", "disabled");
                 $(".search-clear").attr("disabled", "disabled");
                 timer = setTimeout(next, interval);
             }

@@ -170,7 +170,7 @@ function handleAlgActivate(grid) {
  * @param grid - The grid of nodes.
  */
 function handleGridClear(grid) {
-    $(".grid-clear").on("click", function () {
+    $(".grid-clear-container").on("click", function () {
         if (algorithmSelected) {
             $(".alg-activate").text("Run " + currentAlgorithm).removeAttr("disabled");
         }
@@ -350,12 +350,12 @@ function draw(array, delay) {
                 $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
             }
         } else {
-            $(".grid-clear").removeAttr("disabled");
+            $(".grid-clear-container").removeAttr("disabled");
             $(".search-clear").removeAttr("disabled");
             algorithmStarted = true;
         }
     });
-    $(".grid-clear").removeAttr("disabled");
+    $(".grid-clear-container").removeAttr("disabled");
     $(".search-clear").removeAttr("disabled");
 }
 
@@ -378,7 +378,7 @@ function drawOutput(output, interval, callback) {
         if (callback(output[i]) !== false) {
             if (++i < output.length) {
 
-                $(".grid-clear").attr("disabled", "disabled");
+                $(".grid-clear-container").attr("disabled", "disabled");
                 $(".search-clear").attr("disabled", "disabled");
                 timer = setTimeout(next, interval);
             }

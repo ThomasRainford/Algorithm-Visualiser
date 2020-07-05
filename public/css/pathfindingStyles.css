@@ -66,20 +66,20 @@ h1 {
  */
 
 /* Nav containers */
-.main-nav {
-
+.dropdown {
+    margin: 0.5% 0 0.5% 0;
 }
 
 .run-alg-container {
-
+    margin: 0.5% 0 0.5% 0;;
 }
 
 .grid-clear-container {
-
+    margin: 0.5% 0 0.5% 0;
 }
 
 .search-clear-container {
-
+    margin: 0.5% 0 0.5% 0;
 }
 
 
@@ -96,6 +96,10 @@ h1 {
 
 }
 
+.algorithm {
+
+}
+
 
 
 /* Nav elements */
@@ -104,5 +108,5 @@ h1 {
 }
 
 .nav-item {
-    margin: 5px;
+    margin: auto 1%;
 }

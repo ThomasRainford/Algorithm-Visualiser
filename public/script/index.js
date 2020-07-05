@@ -135,9 +135,9 @@ function handleDropDown() {
     $(".speed-menu button").click(function () {
         let text = $(this).text();
         $(".speed").text("Speed: " + text);
-        if(text === "Slow") {
+        if (text === "Slow") {
             delay = 20;
-        } else if(text === "Moderate") {
+        } else if (text === "Moderate") {
             delay = 10;
         } else {
             delay = 5;
@@ -166,10 +166,11 @@ function handleAlgActivate(grid) {
                     aStar(grid);
                 }
 
+                // Set previous field to undefined so old previous path is removed
+                // and the new one can be draw.
                 currentPath.forEach(function (item) {
                     item.previous = undefined;
                 });
-
             }
         } else {
             $(this).text("Select Algorithm");

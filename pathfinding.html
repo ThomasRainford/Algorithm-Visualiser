@@ -37,15 +37,33 @@
                         <a class="nav-link active" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <div class="dropdown">
-                            <button class="algorithm btn btn-secondary dropdown-toggle" type="button"
-                                    id="dropdownMenuButton"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Algorithms
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <button class="dropdown-item">Dijkstra</button>
-                                <button class="dropdown-item">A* Search</button>
+                        <div class="algorithm-container">
+                            <div class="dropdown">
+                                <button class="algorithm btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Algorithms
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="algorithmDropdownMenuButton">
+                                    <button class="dropdown-item">Dijkstra</button>
+                                    <button class="dropdown-item">A* Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <div class="speed-container">
+                            <div class="dropdown">
+                                <button class="speed btn btn-secondary dropdown-toggle" type="button"
+                                        id="dropdownMenuButton"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Speed
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="speedDropdownMenuButton">
+                                    <button class="dropdown-item">Slow</button>
+                                    <button class="dropdown-item">Moderate</button>
+                                    <button class="dropdown-item">Fast</button>
+                                </div>
                             </div>
                         </div>
                     </li>

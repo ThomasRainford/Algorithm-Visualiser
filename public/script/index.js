@@ -125,7 +125,7 @@ function handleGridInput(grid) {
  * Handles the drop down menu for selecting algorithm.
  */
 function handleDropDown() {
-    $(".dropdown-menu button").click(function () {
+    $(".algorithm-menu button").click(function () {
         let text = $(this).text();
         $(".run-alg").text("Run " + text);
         algorithmSelected = true;

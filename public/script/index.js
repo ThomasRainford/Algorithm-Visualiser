@@ -31,7 +31,7 @@ let newPath = false;
  *
  * @type {number}
  */
-let delay = 20;
+let delay = 50;
 
 /**
  * The current algorithm selected.
@@ -136,9 +136,9 @@ function handleDropDown() {
         let text = $(this).text();
         $(".speed").text("Speed: " + text);
         if (text === "Slow") {
-            delay = 20;
+            delay = 50;
         } else if (text === "Moderate") {
-            delay = 10;
+            delay = 20;
         } else {
             delay = 5;
         }

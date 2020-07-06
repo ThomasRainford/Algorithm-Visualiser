@@ -126,13 +126,13 @@ function handleGridInput(grid) {
  * and selecting the delay.
  */
 function handleDropDown() {
-    $(".algorithm-menu button").click(function () {
+    $(".algorithm-menu a").click(function () {
         let text = $(this).text();
         $(".run-alg").text("Run " + text);
         algorithmSelected = true;
     });
 
-    $(".speed-menu button").click(function () {
+    $(".speed-menu a").click(function () {
         let text = $(this).text();
         $(".speed").text("Speed: " + text);
         if (text === "Slow") {

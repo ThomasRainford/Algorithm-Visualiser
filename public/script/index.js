@@ -260,7 +260,8 @@ function clearGrid(grid) {
                 .removeClass("data-path")
                 .removeClass("data-visited")
                 .removeClass("data-selected")
-                .removeClass("data-prev-path");
+                .removeClass("data-prev-path")
+                .removeClass("data-prev-visited");
         }
     }
     clearTimeout(timer);
@@ -281,7 +282,8 @@ function clearSearch(grid) {
             $(`.table tr.row td.${row}-${col}`)
                 .removeClass("data-path")
                 .removeClass("data-visited")
-                .removeClass("data-prev-path");
+                .removeClass("data-prev-path")
+                .removeClass("data-prev-visited");
         }
     }
     clearTimeout(timer);
@@ -356,12 +358,19 @@ function draw(array, delay) {
         let cssClass = setCssClass(startPath);
 
         if (node.state !== "start" && node.state !== "end") {
+            let nodeElement = $(`.table tr.row td.${node.row}-${node.col}`);
             if (startPath) {
-                $(`.table tr.row td.${node.row}-${node.col}`)
+                nodeElement
                     .addClass(cssClass)
                     .removeClass("data-visited");
             } else {
-                $(`.table tr.row td.${node.row}-${node.col}`).addClass(cssClass);
+                nodeElement.addClass(cssClass);
+
+                if(nodeElement.hasClass("data-visited") && nodeElement.hasClass("data-prev-path")) {
+                    nodeElement.removeClass("data-visited").removeClass("data-prev-path");
+                    nodeElement.addClass("data-prev-visited");
+                }
+
             }
         } else {
             $(".grid-clear").removeAttr("disabled");

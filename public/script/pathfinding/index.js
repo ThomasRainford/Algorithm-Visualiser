@@ -1,6 +1,6 @@
 import {Grid} from './grid.js';
-import {Dijkstra} from "./pathfinding/dijkstra/dijkstra.js";
-import {AStar} from "./pathfinding/astar/aStarSearch.js";
+import {Dijkstra} from "./dijkstra/dijkstra.js";
+import {AStar} from "./astar/aStarSearch.js";
 
 /**
  * Keeps track of when an algorithm is selected.
